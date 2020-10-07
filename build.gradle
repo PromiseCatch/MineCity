@@ -23,10 +23,6 @@ subprojects {
     repositories {
         mavenCentral()
         maven {
-            name = 'gamemods-nexus'
-            url = 'http://nexus.gamemods.com.br/content/groups/public/'
-        }
-        maven {
             name = "spigot-nexus"
             url = "https://hub.spigotmc.org/nexus/content/groups/public/"
         }

@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+@SuppressWarnings("CharsetObjectCanBeUsed")
 public class MineCityPlugin extends JavaPlugin
 {
     private MineCityBukkit instance;
@@ -131,7 +132,6 @@ public class MineCityPlugin extends JavaPlugin
             saveDefaultConfig();
             reloadConfig();
 
-            @SuppressWarnings("SpellCheckingInspection")
             FileConfiguration yaml = getConfig();
             MineCityConfig config = new MineCityConfig();
             config.dbUrl = yaml.getString("database.url", config.dbUrl);
@@ -141,7 +141,7 @@ public class MineCityPlugin extends JavaPlugin
             config.useTitle = yaml.getBoolean("use-titles", true);
             config.defaultNatureDisableCities = !yaml.getBoolean("permissions.default.nature.enable-city-creation", true);
             config.economy = yaml.getString("economy", "none");
-            config.permission = yaml.getString("permissions", "bukkit");
+            config.permission = yaml.getString("permission", "bukkit");
 
             for(PermissionFlag flag: PermissionFlag.values())
             {
