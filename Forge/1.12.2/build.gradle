@@ -22,12 +22,19 @@ project(':Forge:1.12.2') {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2769"
+    version = "1.12.2-14.23.5.2770"
     runDir = "run"
 
     clientJvmArgs += "-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod"
     serverJvmArgs += "-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod"
+
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not allways work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "snapshot_20171003"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 configurations {
@@ -44,6 +51,8 @@ dependencies {
     shade project(':Core')
     shade project(':Forge:Base')
     compile "mysql:mysql-connector-java:6.0.3"
+    compile "li.cil.oc:OpenComputers:MC1.12.2-1.6.+:api"
+    compile "net.industrial-craft:industrialcraft-2:2.8.+:dev"
     testCompile fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
     testCompile fileTree(dir: "run/mods/1.12.2", include: ["*.jar"])
 }
