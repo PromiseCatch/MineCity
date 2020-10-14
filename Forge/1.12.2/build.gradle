@@ -51,7 +51,7 @@ dependencies {
     shade project(':Core')
     shade project(':Forge:Base')
     compile "mysql:mysql-connector-java:6.0.3"
-    compile "li.cil.oc:OpenComputers:MC1.12.2-1.6.+:api"
+    compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
     compile "net.industrial-craft:industrialcraft-2:2.8.+:dev"
     testCompile fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
     testCompile fileTree(dir: "run/mods/1.12.2", include: ["*.jar"])
