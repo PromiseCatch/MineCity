@@ -27,7 +27,7 @@ minecraft {
 
     clientJvmArgs += "-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod"
     serverJvmArgs += "-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod"
-    mappings = "snapshot_20171003"
+    mappings = "snapshot_20170624"
 }
 
 configurations {
