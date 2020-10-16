@@ -3,7 +3,7 @@
 
 name: Forge 1.10.2
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew Forge:1.10.2:build
       - name: Rename artifacts
-        run: mv Forge/1.10.2/build/libs/MineCity-Forge-MC-1.10.2-*.jar Forge/1.10.2/build/libs/MineCity-Forge-MC-1.10.2.jar
+        run: mv Forge/1.10.2/build/libs/MineCity-Forge-MC1.10.2-*-SNAPSHOT.jar Forge/1.10.2/build/libs/MineCity-Forge-MC-1.10.2.jar
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         if: success()
