@@ -28,7 +28,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-//import org.mcstats.Metrics; // TODO: Reactivate MCStats metrics
+//import org.mcstats.Metrics; TODO: Reactivate MCStats metrics
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
