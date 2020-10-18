@@ -15,7 +15,7 @@ import static org.objectweb.asm.Opcodes.*;
 @Referenced(at = MineCityColorCoreMod.class)
 public class ColorExplosionTransformer extends ExplosionTransformer {
     @Override
-    protected void path(String name, ClassNode node, ClassReader reader) {
+    protected void patch(String name, ClassNode node, ClassReader reader) {
         super.patch(name, node, reader);
 
         FieldNode exploder = node.fields.stream().filter(f-> f.desc.equals("Lnet/minecraft/entity/Entity;"))

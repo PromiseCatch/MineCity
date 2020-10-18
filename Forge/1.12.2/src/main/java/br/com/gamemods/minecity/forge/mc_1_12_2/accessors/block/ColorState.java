@@ -38,7 +38,7 @@ public interface ColorState extends IState {
     @SuppressWarnings("unchecked")
     @Override
     default Collection<IProp<?>> getPropertyKeys() {
-        return (Collection) ((IBlockState) this).getPropertyNames();
+        return (Collection) ((IBlockState) this).getPropertyKeys();
     }
 
     @SuppressWarnings("unchecked")
