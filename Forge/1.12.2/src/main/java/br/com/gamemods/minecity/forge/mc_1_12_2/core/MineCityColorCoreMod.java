@@ -6,6 +6,7 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
+import net.minecraftforge.fml.relauncher.IFMLCallHook;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import java.io.File;
@@ -18,7 +19,7 @@ import java.util.Map;
         "br.com.gamemods.minecity.forge.base.core",
 })
 @IFMLLoadingPlugin.SortingIndex(value = 1001)
-public class MineCityColorCoreMod {
+public class MineCityColorCoreMod implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public Void call() throws  Exception {
         File mcDir = (File) FMLInjectionData.data()[6];
