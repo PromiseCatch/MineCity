@@ -36,7 +36,7 @@ subprojects {
         } */
         maven {
             name = 'sponge'
-            url = 'http://repo.spongepowered.org/maven'
+            url = 'https://repo.spongepowered.org/maven'
         }
         maven {
             name = 'vault-repo'
