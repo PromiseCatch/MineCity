@@ -27,8 +27,8 @@ apply plugin: 'forge'
 project(':Forge:1.7.10') {
     archivesBaseName = "MineCity-Forge-MC1.7.10"
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 minecraft {
@@ -51,11 +51,11 @@ dependencies {
     shade project(':Core')
     shade project(':Forge:Base')
     // shade "org.mcstats.forge:metrics:R8-SNAPSHOT" TODO: Get another nexus for this dependence
-    compile "mysql:mysql-connector-java:5.1.32"
-    compile "li.cil.oc:OpenComputers:MC1.7.10-1.7.+:api"
-    compile "net.industrial-craft:industrialcraft-2:2.2.825-experimental:dev"
-    testCompile fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
-    testCompile fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
+    implementation "mysql:mysql-connector-java:5.1.32"
+    implementation "li.cil.oc:OpenComputers:MC1.7.10-1.7.+:api"
+    implementation "net.industrial-craft:industrialcraft-2:2.2.825-experimental:dev"
+    testImplementation fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
+    testImplementation fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
 }
 
 jar {

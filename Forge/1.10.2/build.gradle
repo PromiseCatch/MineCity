@@ -32,8 +32,8 @@ plugins {
 project(':Forge:1.10.2') {
     archivesBaseName = "MineCity-Forge-MC1.10.2"
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 minecraft {
@@ -65,11 +65,11 @@ repositories {
 dependencies {
     shade project(':Core')
     shade project(':Forge:Base')
-    compile "mysql:mysql-connector-java:6.0.3"
-    compile "li.cil.oc:OpenComputers:MC1.10.2-1.7.+:api"
-    compile "net.industrial-craft:industrialcraft-2:2.6.+:dev"
-    testCompile fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
-    testCompile fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
+    implementation "mysql:mysql-connector-java:6.0.3"
+    implementation "li.cil.oc:OpenComputers:MC1.10.2-1.7.+:api"
+    implementation "net.industrial-craft:industrialcraft-2:2.6.+:dev"
+    testImplementation fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
+    testImplementation fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
 }
 
 jar {
