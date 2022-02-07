@@ -6,7 +6,7 @@ buildscript {
 }
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "4.0.4"
 }
 
 apply plugin: 'java'
@@ -60,7 +60,7 @@ allprojects {
         testImplementation "junit:junit:4.12"
         testImplementation "org.powermock:powermock-module-junit4:1.6.5"
         testImplementation "org.powermock:powermock-api-mockito:1.6.5"
-        testImplementation project(":UnitTest")
+        testImplementation(project(":UnitTest"))
         testImplementation "mysql:mysql-connector-java:5.1.32"
     }
 }
@@ -98,8 +98,8 @@ project(':Bukkit') {
         }
         //compile files("run/BuildTools/Spigot/Spigot-Server/target/original-spigot-1.10.2-R0.1-SNAPSHOT.jar")
         //compile files("run/BuildTools/spigot-1.10.2.jar")
-        compile "org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT"
         implementation "org.bstats:bstats-bukkit:2.2.1"
+        implementation "org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT"
     }
 
     jar {
@@ -129,6 +129,6 @@ project(':Bukkit') {
 
 project(':UnitTest') {
     dependencies {
-        implementation "org.assertj:assertj-core:3.1.0"
+        compile "org.assertj:assertj-core:3.11.1"
     }
 }

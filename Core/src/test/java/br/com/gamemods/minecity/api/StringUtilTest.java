@@ -1,19 +1,14 @@
 package br.com.gamemods.minecity.api;
 
-import org.assertj.core.internal.cglib.core.Local;
 import org.junit.Test;
-import org.mockito.internal.matchers.And;
-import org.mockito.internal.matchers.Contains;
-import org.mockito.internal.matchers.Or;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
 import static br.com.gamemods.minecity.api.StringUtil.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StringUtilTest
 {

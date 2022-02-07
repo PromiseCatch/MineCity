@@ -11,12 +11,16 @@ buildscript {
             url = "https://files.minecraftforge.net/maven"
         }
         maven {
+            name = "covertdragon"
+            url = "https://maven.covertdragon.team/repository/internal/"
+        }
+        maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
-        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.5') {
             changing = true
         }
     }
