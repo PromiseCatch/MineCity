@@ -2,10 +2,19 @@
 // For those who want the bleeding edge
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "forge2"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
@@ -28,7 +37,7 @@ project(':Forge:1.10.2') {
 }
 
 minecraft {
-    version = "1.10.2-12.18.3.2185"
+    version = "1.10.2-12.18.3.2511"
     runDir = "run"
 
     clientJvmArgs += "-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod"
