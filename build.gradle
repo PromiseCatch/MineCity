@@ -65,7 +65,7 @@ allprojects {
         testImplementation "junit:junit:4.12"
         testImplementation "org.powermock:powermock-module-junit4:1.6.5"
         testImplementation "org.powermock:powermock-api-mockito:1.6.5"
-        testImplementation project(":UnitTest")
+        testImplementation(project(":UnitTest"))
         testImplementation "mysql:mysql-connector-java:5.1.32"
     }
 }
@@ -103,7 +103,7 @@ project(':Bukkit') {
         }
         //compile files("run/BuildTools/Spigot/Spigot-Server/target/original-spigot-1.10.2-R0.1-SNAPSHOT.jar")
         //compile files("run/BuildTools/spigot-1.10.2.jar")
-        compile "org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT"
+        implementation "org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT"
         // compile "org.mcstats.bukkit:metrics:R8-SNAPSHOT" TODO: Get another nexus for this dependence
     }
 
@@ -134,6 +134,6 @@ project(':Bukkit') {
 
 project(':UnitTest') {
     dependencies {
-        implementation "org.assertj:assertj-core:3.1.0"
+        compile "org.assertj:assertj-core:3.11.1"
     }
 }
