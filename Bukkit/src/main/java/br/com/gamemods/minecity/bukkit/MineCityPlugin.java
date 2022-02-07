@@ -31,7 +31,7 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
-// import org.mcstats.Metrics; TODO: Reactivate MCStats metrics
+import org.bstats.Metrics;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -61,45 +61,32 @@ public class MineCityPlugin extends JavaPlugin
 
     @Slow
     @Override
-    public void onEnable()
-    {
-        // TODO: Reactivate MCStats metrics
-        /* try
-        {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
+    public void onEnable() {
+        try {
+            Metrics metrics = new Metrics(this, 14222);
+        } catch (Throwable e) {
+            getLogger().log(Level.WARNING, "BStats metrics failed to start", e);
         }
-        catch(Throwable e)
-        {
-            getLogger().log(Level.WARNING, "MCStats metrics failed to start", e);
-        } */
-
-        getLogger().log(Level.WARNING, "MCStats metrics temporarily disabled.");
 
         PermissionLayer.register("bukkit", BukkitPermission.PROVIDER);
 
-        if(getServer().getPluginManager().isPluginEnabled("Vault"))
-        {
+        if (getServer().getPluginManager().isPluginEnabled("Vault")) {
             getLogger().info("Vault found. Enabling Vault support");
             EconomyLayer.register("vault", VaultProviders.ECONOMY);
             PermissionLayer.register("vault", VaultProviders.PERMISSION);
         }
 
-        try
-        {
+        try {
             Class.forName("org.spongepowered.api.Sponge");
             getLogger().info("Sponge API found. Enabling Sponge support");
             EconomyLayer.register("sponge", SpongeProviders.ECONOMY);
             PermissionLayer.register("sponge", SpongeProviders.PERMISSION);
-        }
-        catch(ClassNotFoundException ignored)
-        {
+        } catch (ClassNotFoundException ignored) {
             getLogger().info("Sponge API not found, disabling Sponge support");
         }
 
         BukkitTransformer transformer;
-        try
-        {
+        try {
             LegacyFormat.BLACK.server = ChatColor.BLACK;
             LegacyFormat.DARK_BLUE.server = ChatColor.DARK_BLUE;
             LegacyFormat.DARK_GREEN.server = ChatColor.DARK_GREEN;
@@ -124,14 +111,11 @@ public class MineCityPlugin extends JavaPlugin
             LegacyFormat.ITALIC.server = ChatColor.ITALIC;
 
             transformer = new SpigotTransformer();
-        }
-        catch(NoClassDefFoundError ignored)
-        {
+        } catch (NoClassDefFoundError ignored) {
             transformer = new BukkitTransformer();
         }
 
-        try
-        {
+        try {
             saveDefaultConfig();
             reloadConfig();
 
@@ -146,8 +130,7 @@ public class MineCityPlugin extends JavaPlugin
             config.economy = yaml.getString("economy", "none");
             config.permission = yaml.getString("permission", "bukkit");
 
-            for(PermissionFlag flag: PermissionFlag.values())
-            {
+            for (PermissionFlag flag: PermissionFlag.values()) {
                 adjustDefaultFlag(yaml, "permissions.default.nature.", flag, flag.defaultNature, config.defaultNatureFlags);
                 adjustDefaultFlag(yaml, "permissions.default.city.", flag, flag.defaultCity, config.defaultCityFlags);
                 adjustDefaultFlag(yaml, "permissions.default.plot.", flag, flag.defaultPlot, config.defaultPlotFlags);
@@ -156,30 +139,21 @@ public class MineCityPlugin extends JavaPlugin
 
             transformer.parseXML(MineCity.class.getResourceAsStream("/assets/minecity/messages-en.xml"));
             String str = config.locale.toLanguageTag();
-            if(!str.equals("en"))
-            {
-                try
-                {
+            if (!str.equals("en")) {
+                try {
                     InputStream resource = MineCity.class.getResourceAsStream("/assets/minecity/messages-"+str +".xml");
-                    if(resource != null)
-                    {
-                        try
-                        {
+                    if (resource != null) {
+                        try {
                             transformer.parseXML(resource);
-                        }
-                        finally
-                        {
+                        } finally {
                             resource.close();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         getLogger().log(Level.SEVERE, "There're no translations to "+str+" available.");
                         str = "en";
                     }
                 }
-                catch(Exception e)
-                {
+                catch (Exception e) {
                     getLogger().log(Level.SEVERE, "Failed to load the "+str+" translations", e);
                 }
             }
@@ -198,12 +172,10 @@ public class MineCityPlugin extends JavaPlugin
             instance.mineCity.commands.parseXml(MineCity.class.getResourceAsStream("/assets/minecity/commands-"+lang+".xml"));
 
             Set<String> rootCommands = instance.mineCity.commands.getRootCommands();
-            try(InputStream is = MineCityPlugin.class.getResourceAsStream("/plugin.yml"))
-            {
+            try (InputStream is = MineCityPlugin.class.getResourceAsStream("/plugin.yml")) {
                 YamlConfiguration plugin = YamlConfiguration.loadConfiguration(new InputStreamReader(is, "UTF-8"));
                 ConfigurationSection commands = plugin.getConfigurationSection("commands");
-                if(commands != null)
-                {
+                if (commands != null) {
                     commands.getKeys(false).stream().filter(key -> !instance.mineCity.commands.get(key).isPresent())
                             .forEach(key ->
                             {
