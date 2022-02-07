@@ -21,6 +21,7 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 /*
@@ -32,8 +33,8 @@ plugins {
 project(':Forge:Base') {
     archivesBaseName = "MineCity-Forge-Base"
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 minecraft {
@@ -50,11 +51,11 @@ minecraft {
 }
 
 dependencies {
-    compile project(':Core')
-    compile(project(':VaultEco')) {
+    implementation(project(':Core'))
+    implementation(project(':VaultEco')) {
         transitive = false
     }
-    compile(project(':SpongeEco')) {
+    implementation(project(':SpongeEco')) {
         transitive = false
     }
 }
