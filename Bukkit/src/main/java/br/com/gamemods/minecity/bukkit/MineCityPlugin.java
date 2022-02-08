@@ -20,6 +20,7 @@ import br.com.gamemods.minecity.permission.PermissionLayer;
 import br.com.gamemods.minecity.sponge.SpongeProviders;
 import br.com.gamemods.minecity.vault.VaultProviders;
 import net.md_5.bungee.api.ChatColor;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.*;
@@ -31,7 +32,6 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
-import org.bstats.Metrics;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
