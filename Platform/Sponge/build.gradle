@@ -12,13 +12,9 @@ buildscript {
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.7+'
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
-}
-
-plugins {
-    id 'org.spongepowered.plugin' version '0.9.0'
 }
 
 apply plugin: 'java'
@@ -31,9 +27,9 @@ targetCompatibility = 1.8
 
 dependencies {
     shadow project(':Reactive')
-    compile 'org.spongepowered:spongeapi:7.2.0'
+    compile 'org.spongepowered:spongeapi:7.2+'
     //compile 'org.spongepowered:spongecommon:5.1.0-SNAPSHOT:dev'
-    compile 'org.spongepowered:mixin:0.8'
+    compile 'org.spongepowered:mixin:0.8.5'
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 }
 
@@ -46,7 +42,7 @@ minecraft {
 }
 
 mixin {
-    add sourceSets.main, 'mixins.minecity.refmap.json'
+    config 'mixins.minecity.json'
     disableTargetExport = true
     disableTargetValidator = true
     defaultObfuscationEnv 'searge'
@@ -61,7 +57,15 @@ shadowJar {
     project.configurations.shadow.setTransitive(true);
     configurations = [project.configurations.shadow]
 
-    classifier ''
+    dependencies {
+        include(dependency({ it.moduleGroup == project.group }))
+        include(dependency('org.codehaus.groovy:groovy-all'))
+        include(dependency('org.jetbrains:annotations'))
+    }
+
+    exclude 'dummyThing'
+
+    classifier null
 }
 
 reobf {
@@ -70,8 +74,6 @@ reobf {
 
 jar {
     manifest.attributes(
-            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-            'MixinConfigs': 'mixins.minecity.refmap.json',
             'ForceLoadAsMod' : 'true'
     )
 
