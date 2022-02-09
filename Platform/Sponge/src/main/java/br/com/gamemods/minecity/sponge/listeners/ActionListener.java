@@ -20,6 +20,7 @@ import br.com.gamemods.minecity.reactive.game.item.ReactiveItemStack;
 import br.com.gamemods.minecity.reactive.reaction.InteractReaction;
 import br.com.gamemods.minecity.reactive.reaction.Reaction;
 import br.com.gamemods.minecity.sponge.MineCitySponge;
+import br.com.gamemods.minecity.sponge.cmd.PlayerSender;
 import br.com.gamemods.minecity.sponge.data.manipulator.boxed.MineCityKeys;
 import br.com.gamemods.minecity.structure.DisplayedSelection;
 import org.jetbrains.annotations.Nullable;
@@ -139,6 +140,7 @@ public class ActionListener
 
         Permissible sender = sponge.permissible(subject);
         AtomicBoolean notify = new AtomicBoolean(true);
+        if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
         reaction.getAction().can(sponge.mineCity, sender).ifPresent(denial-> {
             event.setCancelled(true);
             if(notify.get())
@@ -196,6 +198,7 @@ public class ActionListener
             }
         };
 
+        if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
         reaction.getAction().can(sponge.mineCity, sender).ifPresent(deny);
         reaction.getUseItem().can(sponge.mineCity, sender).ifPresent(deny);
         reaction.getUseBlock().can(sponge.mineCity, sender).ifPresent(deny);
@@ -293,6 +296,7 @@ public class ActionListener
         Reaction reaction = operation.apply(cause, modification);
 
         Permissible sender = sponge.permissible(subject);
+        if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
         reaction.can(sponge.mineCity, sender).ifPresent(reason-> {
             event.setCancelled(true);
             sender.send(FlagHolder.wrapDeny(reason));
@@ -325,6 +329,7 @@ public class ActionListener
         Reaction reaction = entity.onBlockChangePre(modification);
 
         Permissible sender = sponge.permissible(subject);
+        if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
         reaction.can(sponge.mineCity, sender).ifPresent(reason-> {
             event.setCancelled(true);
             sender.send(FlagHolder.wrapDeny(reason));
@@ -343,6 +348,7 @@ public class ActionListener
         Reaction reaction = snapshot.onBlockChangePre(modification);
 
         Permissible sender = sponge.permissible(subject);
+        if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
         reaction.can(sponge.mineCity, sender).ifPresent(reason-> {
             event.setCancelled(true);
             sender.send(FlagHolder.wrapDeny(reason));
