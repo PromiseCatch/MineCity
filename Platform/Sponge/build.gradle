@@ -2,7 +2,7 @@ buildscript {
     repositories {
         maven {
             name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
+            url = 'https://files.minecraftforge.net/maven'
         }
         maven {
             name = 'sponge'
@@ -11,17 +11,18 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
 
 plugins {
-    id 'org.spongepowered.plugin' version '0.7'
-    id 'net.minecrell.vanillagradle.server' version '2.2-3'
+    id 'org.spongepowered.plugin' version '0.9.0'
 }
 
 apply plugin: 'java'
+apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
@@ -29,27 +30,42 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile project(':Reactive')
-    compile 'org.spongepowered:spongeapi:6.0.0-SNAPSHOT'
+    shadow project(':Reactive')
+    compile 'org.spongepowered:spongeapi:7.2.0'
     //compile 'org.spongepowered:spongecommon:5.1.0-SNAPSHOT:dev'
-    compile 'org.spongepowered:mixin:0.5.17-SNAPSHOT'
+    compile 'org.spongepowered:mixin:0.8'
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 }
 
 minecraft {
-    version = '1.11'
-    mappings = 'snapshot_20161214'
-    //version = '1.10.2'
-    //mappings = 'snapshot_20161027'
-    makeObfSourceJar = false
-
-    replace '@VERSION@', project.version
-    replace '@DESC@', 'City based protection plugin'
+    mappings channel: 'snapshot', version: '20171003-1.12'
+//    makeObfSourceJar = false
+//
+//    replace '@VERSION@', project.version
+//    replace '@DESC@', 'City based protection plugin'
 }
 
-sourceSets {
-    main {
-        refMap = 'mixins.minecity.refmap.json'
-    }
+mixin {
+    add sourceSets.main, 'mixins.minecity.refmap.json'
+    disableTargetExport = true
+    disableTargetValidator = true
+    defaultObfuscationEnv 'searge'
+}
+
+configurations {
+    shadow
+    compile.extendsFrom shadow
+}
+
+shadowJar {
+    project.configurations.shadow.setTransitive(true);
+    configurations = [project.configurations.shadow]
+
+    classifier ''
+}
+
+reobf {
+    shadowJar {}
 }
 
 jar {
@@ -58,9 +74,9 @@ jar {
             'MixinConfigs': 'mixins.minecity.refmap.json',
             'ForceLoadAsMod' : 'true'
     )
-}
 
-reobfJar {
-    setJar(tasks.shadowJar.archivePath)
 }
-reobfJar.dependsOn shadowJar
+jar.finalizedBy("reobfJar")
+
+
+

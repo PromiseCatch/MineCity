@@ -63,7 +63,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Plugin(id="minecity", name="MineCity", version = "@VERSION@", authors = "joserobjr", description = "@DESC@")
+@Plugin(id="minecity", name="MineCity", version = "1.0.0", authors = "joserobjr", description = "MineCity for Sponge")
 public class MineCitySpongePlugin
 {
     @Inject

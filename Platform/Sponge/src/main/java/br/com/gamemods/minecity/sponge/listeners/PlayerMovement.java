@@ -13,13 +13,16 @@ import br.com.gamemods.minecity.structure.City;
 import br.com.gamemods.minecity.structure.DisplayedSelection;
 import br.com.gamemods.minecity.structure.Nature;
 import br.com.gamemods.minecity.structure.Plot;
+import com.google.common.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.block.BlockState;
+import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.entity.TameableData;
 import org.spongepowered.api.data.property.AbstractProperty;
 import org.spongepowered.api.data.property.block.SolidCubeProperty;
+import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
@@ -55,9 +58,10 @@ public class PlayerMovement implements CommonMovimentListener<Player>
 
     private void removeUnleashedEntities()
     {
+        Key.Builder<Entity, Value<Entity>> key = (Key.Builder<Entity, Value<Entity>>) Key.builder();
         leashedEntities.removeIf(entity -> !entity
-                .get(Keys.LEASH_HOLDER)
-                .filter(holder -> holder.getUniqueId().map(player.getUniqueId()::equals).orElse(false))
+                .get(key.name("sponge").id("leash_holder").build())
+                .filter(holder -> holder.getUniqueId().equals(player.getUniqueId()))
                 .isPresent()
         );
     }

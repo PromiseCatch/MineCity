@@ -33,10 +33,9 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.block.InteractBlockEvent;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
-import org.spongepowered.api.event.filter.cause.Named;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.util.Tristate;
 import org.spongepowered.api.world.Location;
@@ -62,7 +61,7 @@ public class ActionListener
     }
 
     @Listener(order = Order.POST)
-    public void onInteract(HandInteractEvent event, @Named(NamedCause.SOURCE) Entity entity)
+    public void onInteract(HandInteractEvent event, @First Entity entity)
     {
         lastEntityInteractEvent = event;
     }
@@ -89,7 +88,7 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onInteractBlock(InteractBlockEvent.Secondary event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onInteractBlock(InteractBlockEvent.Secondary event, @First Entity subject)
     {
         HandType handType = event.getHandType();
         Hand hand = Hand.from(handType);
@@ -169,7 +168,7 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onInteractBlock(InteractBlockEvent.Primary event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onInteractBlock(InteractBlockEvent.Primary event, @First Entity subject)
     {
         HandType handType = event.getHandType();
         Hand hand = Hand.from(handType);
@@ -203,25 +202,25 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockPlaceByEntity(ChangeBlockEvent.Place event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onBlockPlaceByEntity(ChangeBlockEvent.Place event, @First Entity subject)
     {
         onBlockChangeByEntity(event, subject, EntityData::onBlockPlace);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockBreakByEntity(ChangeBlockEvent.Break event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onBlockBreakByEntity(ChangeBlockEvent.Break event, @First Entity subject)
     {
         onBlockChangeByEntity(event, subject, EntityData::onBlockBreak);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockReplaceByEntity(ChangeBlockEvent.Modify event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onBlockReplaceByEntity(ChangeBlockEvent.Modify event, @First Entity subject)
     {
         onBlockChangeByEntity(event, subject, EntityData::onBlockReplace);
     }
 
     @Listener(order  = Order.FIRST, beforeModifications = true)
-    public void onBlockGrowByEntity(ChangeBlockEvent.Grow event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onBlockGrowByEntity(ChangeBlockEvent.Grow event, @First Entity subject)
     {
         onBlockChangeByEntity(event, subject, EntityData::onBlockGrow);
     }
@@ -253,25 +252,25 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockPlaceByBlock(ChangeBlockEvent.Place event, @Named(NamedCause.SOURCE) BlockSnapshot subject)
+    public void onBlockPlaceByBlock(ChangeBlockEvent.Place event, @First BlockSnapshot subject)
     {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockPlace);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockBreakByBlock(ChangeBlockEvent.Break event, @Named(NamedCause.SOURCE) BlockSnapshot subject)
+    public void onBlockBreakByBlock(ChangeBlockEvent.Break event, @First BlockSnapshot subject)
     {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockBreak);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockReplaceByBlock(ChangeBlockEvent.Modify event, @Named(NamedCause.SOURCE) BlockSnapshot subject)
+    public void onBlockReplaceByBlock(ChangeBlockEvent.Modify event, @First BlockSnapshot subject)
     {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockReplace);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockGrowByBlock(ChangeBlockEvent.Grow event, @Named(NamedCause.SOURCE) BlockSnapshot subject)
+    public void onBlockGrowByBlock(ChangeBlockEvent.Grow event, @First BlockSnapshot subject)
     {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockGrow);
     }
@@ -301,7 +300,7 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockChangePre(ChangeBlockEvent.Pre event, @Named(NamedCause.SOURCE) Entity subject)
+    public void onBlockChangePre(ChangeBlockEvent.Pre event, @First Entity subject)
     {
         HandInteractEvent interact = this.lastEntityInteractEvent;
         if(interact != null && interact.getCause().first(Entity.class).orElse(null) != subject)
@@ -333,7 +332,7 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockChangePre(ChangeBlockEvent.Pre event, @Named(NamedCause.SOURCE) BlockSnapshot subject)
+    public void onBlockChangePre(ChangeBlockEvent.Pre event, @First BlockSnapshot subject)
     {
         BlockSnapshotData snapshot = ReactiveLayer.getBlockSnapshotData(subject).get();
         List<BlockSnapshotData> changeList = event.getLocations().stream()

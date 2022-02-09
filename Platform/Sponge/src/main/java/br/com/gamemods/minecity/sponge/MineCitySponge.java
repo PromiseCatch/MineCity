@@ -30,6 +30,7 @@ import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
@@ -77,7 +78,7 @@ public class MineCitySponge implements Server
 
     public Cause cause()
     {
-        return Cause.source(plugin.container).build();
+        return Cause.builder().append(plugin.container).build(EventContext.empty());
     }
 
     public ChunkPos chunk(Chunk chunk)

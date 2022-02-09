@@ -370,7 +370,7 @@ public class MessageTransformer
                                     hover = new HoverAchievement(type.getAttribute("id"));
                                     break;
                                 case "item":
-                                    //TODO HoverItem
+                                    hover = new HoverItem(type.getAttribute("id"));
                                     break;
                                 default:
                                     continue queue;
@@ -1149,6 +1149,42 @@ public class MessageTransformer
         protected void toJson(StringBuilder sb)
         {
             sb.append("{\"action\":\"show_achievement\",\"value\":\"").append(escapeJson(id)).append("\"}");
+        }
+    }
+    protected final class HoverItem extends Hover {
+
+        public String id;
+
+        public HoverItem(String id)
+        {
+            this.id = id;
+        }
+
+        @Override
+        public void replaceStrings(Map<String, String> replacements)
+        {
+            id = replaceTokens(id, replacements);
+        }
+
+        @Override
+        protected void toJson(StringBuilder sb)
+        {
+            //sb.append("{\"action\":\"show_entity\",\"value\":\"{id:").append(escapeJson(id))
+            //        .append(",tag:").append(escapeJson(name.toString())).append(",type:").append(escapeJson(type))
+            //        .append("}\"}");
+        }
+
+        @Override
+        protected Hover clone()
+        {
+            try
+            {
+                return (HoverItem) super.clone();
+            }
+            catch(CloneNotSupportedException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
