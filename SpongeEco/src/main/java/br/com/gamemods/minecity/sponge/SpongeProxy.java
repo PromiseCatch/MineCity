@@ -34,7 +34,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-@Plugin(id = "minecitysponge", dependencies = @Dependency(id="minecity"), name = "MineCity-Sponge",
+// TODO: HACK, @Dependency doesn't like put forge mods as dependency (when using forge 1.12.2). To fix, set optional as true
+@Plugin(id = "minecitysponge", dependencies = @Dependency(id="minecity", optional = true), name = "MineCity-Sponge",
+        authors = {"joserobjr", "LoboMetalurgico"},
         description = "MineCity's module that implements Sponge's Economy and Permission support.")
 public class SpongeProxy implements EconomyProxy, PermissionProxy
 {

@@ -65,8 +65,6 @@ allprojects {
     }
 }
 
-
-
 project(':VaultEco') {
     dependencies {
         implementation(project(':Core'))

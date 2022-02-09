@@ -19,6 +19,7 @@ public class PartFormationPlaneTransformer extends BasicTransformer
 {
     @Referenced("br.com.gamemods.minecity.forge.mc_1_7_10.core.MineCitySevenCoreMod")
     @Referenced("br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod")
+    @Referenced("br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod")
     public PartFormationPlaneTransformer()
     {
         super("appeng.parts.automation.PartFormationPlane");

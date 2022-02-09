@@ -40,28 +40,37 @@ public class MineCityColorCoreMod implements IFMLLoadingPlugin, IFMLCallHook {
         ModEnv.aabbClass = "net.minecraft.util.math.AxisAlignedBB";
 
         return new String[]{
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.PartFormationPlaneTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.PartAnnihilationPaneTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.PartFormationPlaneTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.PartAnnihilationPaneTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.IPartHostTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.AEBasePartTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.PartPlacementTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.PartPlacementTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.ToolMassCannonTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.WirelessTerminalGuiObjectTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.BlockTinyTNTTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.appeng.EntityTinyTNTPrimedTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityTeleporterTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityTerraTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityMinerTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityTeleporterTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityTerraTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityMinerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityCropmatronTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityTeslaTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityRecyclerTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityRecyclerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.ExplosionIC2Transformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.EntityIC2ExplosiveTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.EntityDynamiteTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.ICropTileTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.CropCardTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityCropTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.EntityParticleTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.TileEntityCropTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.industrialcraft.EntityParticleTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.opencomputers.InventoryTransferDClassTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.opencomputers.TransposerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.opencomputers.AdapterTransformer",
@@ -80,10 +89,11 @@ public class MineCityColorCoreMod implements IFMLLoadingPlugin, IFMLCallHook {
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.wrcbe.EntityREPTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.wrcbe.JammerPartTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.wrcbe.WirelessBoltTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveintegration.TileItemRobinTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.zettaindustries.QuarryFixerBlockTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.zettaindustries.BlockSulfurTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.TileEntityFluidPumpTransformer",
+                "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveintegration.TileItemRobinTransformer",
+                // TODO: Check if pump still existing on 1.12
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.TileEntityFluidPumpTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.TileEntityConveyorSorterTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.BlockMetalDevicesTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.ItemIEToolTransformer",
@@ -91,24 +101,29 @@ public class MineCityColorCoreMod implements IFMLLoadingPlugin, IFMLCallHook {
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.ChemthrowerHandlerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.immersiveengineering.EntityChemthrowerShotTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.forgemultipart.ButtonPartTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.mod.forgemultipart.BlockMultiPartTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.mod.forgemultipart.BlockMultiPartTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.forgemultipart.EventHandlerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.mod.ModInterfacesTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityPlayerTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityPlayerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityLivingBaseTransformer",
                 "br.com.gamemods.minecity.forge.mc_1_12_2.core.transformer.forge.ColorExplosionTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.item.ItemTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockPistonBaseTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockPistonBaseTransformer",
+                // TODO: Fix
+                // "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockPistonBaseTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.item.ItemBucketTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockChorusFlowerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.NodeProcessorTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.PathFinderTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.PathFinderTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.world.ChunkCacheTransformer",
                 // TODO: Compatibility with Sponge
                 //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.OnImpactTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityEggTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockStemTransformer",
+                // TODO: Fix
+                // "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityEggTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockStemTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockSaplingTransformer",
                 // TODO: Fix Pure Forge issue
                 //"br.com.gamemods.minecity.forge.base.core.transformer.forge.block.GrowMonitorTransformer",
@@ -117,17 +132,22 @@ public class MineCityColorCoreMod implements IFMLLoadingPlugin, IFMLCallHook {
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityArrowTransformer",
                 // TODO: Fix Pure Forge issue
                 //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityIgnitionTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityEnderCrystalTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockTNTTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityEnderCrystalTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockTNTTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityArmorStandTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityFishingHookTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityAreaEffectCloudTransformer",
                 "br.com.gamemods.minecity.forge.mc_1_12_2.core.transformer.forge.ColorInterfaceTransformer",
                 // TODO: Compatibility with Sponge
                 //"br.com.gamemods.minecity.forge.mc_1_12_2.core.transformer.forge.ColorEntityPotionTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityBoatTransformer",
-                "br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityMinecartTransformer",
-                "br.com.gamemods.minecity.forge.mc_1_12_2.core.transformer.forge.ColorWorldServerTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityBoatTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.base.core.transformer.forge.entity.EntityMinecartTransformer",
+                // TODO: Fix
+                //"br.com.gamemods.minecity.forge.mc_1_12_2.core.transformer.forge.ColorWorldServerTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.world.ChunkTransformer",
                 "br.com.gamemods.minecity.forge.mc_1_12_2.core.transformer.forge.ColorEntityPlayerMPTransformer",
                 "br.com.gamemods.minecity.forge.base.core.transformer.forge.block.BlockOpenReactorTransformer",

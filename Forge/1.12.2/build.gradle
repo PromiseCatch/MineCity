@@ -74,8 +74,6 @@ configurations {
     compile.extendsFrom shade
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 repositories {
     maven { url = "http://maven.cil.li/" }
     maven { url = "http://maven.ic2.player.to/" }
@@ -89,7 +87,7 @@ dependencies {
     implementation "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
     implementation "net.industrial-craft:industrialcraft-2:2.8.+:dev"
     testImplementation fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
-    testImplementation fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
+    testImplementation fileTree(dir: "run/mods/1.12.2", include: ["*.jar"])
 }
 
 jar {
@@ -103,7 +101,7 @@ jar {
 
     configurations.shade.each { dep ->
         from(project.zipTree(dep)){
-            include 'br/**', '*.yml', 'deps.info', 'minecity_*.cfg', 'assets/minecity/**', 'org/mcstats/**'
+            include 'br/**', '*.yml', 'deps.info', 'minecity_*.cfg', 'assets/minecity/**', 'org/bstats/**'
         }
     }
 }

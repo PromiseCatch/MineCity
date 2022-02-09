@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import static org.objectweb.asm.Opcodes.*;
 
 @Referenced("br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod")
+@Referenced("br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod")
 @Referenced(at = PathFinderTransformer.class)
 public class NodeProcessorTransformer implements IClassTransformer
 {

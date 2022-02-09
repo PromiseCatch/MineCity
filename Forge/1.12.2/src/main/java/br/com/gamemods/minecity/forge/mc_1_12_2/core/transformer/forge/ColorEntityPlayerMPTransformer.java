@@ -8,6 +8,6 @@ import br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod;
 public class ColorEntityPlayerMPTransformer extends EntityPlayerMPTransformer {
     @Referenced(at = MineCityColorCoreMod.class)
     public ColorEntityPlayerMPTransformer() {
-        super("br.com.gamemods.minecity.forge.mc_1_12.2.accessors.entity.FrostEntityPlayerMP");
+        super("br.com.gamemods.minecity.forge.mc_1_12_2.accessors.entity.ColorEntityPlayerMP");
     }
 }

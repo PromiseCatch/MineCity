@@ -1,7 +1,7 @@
 [
   {
-    "repo": "http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.32",
-    "file": "mysql-connector-java-5.1.32.jar",
+    "repo": "https://repo.maven.apache.org/maven2/mysql/mysql-connector-java/6.0.3",
+    "file": "mysql-connector-java-6.0.3.jar",
     "class": "com.mysql.jdbc.Driver"
   }
 ]

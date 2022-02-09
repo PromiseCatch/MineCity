@@ -12,6 +12,7 @@ import org.objectweb.asm.tree.*;
 import java.util.ListIterator;
 
 @Referenced("br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod")
+@Referenced("br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod")
 @MethodPatcher
 public class EntityAreaEffectCloudTransformer implements IClassTransformer
 {

@@ -29,6 +29,7 @@ public class ChunkTransformer extends InsertSetterGetterTransformer
     }
 
     @Referenced("br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod")
+    @Referenced("br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod")
     public ChunkTransformer()
     {
         this("br.com.gamemods.minecity.forge.base.accessors.world.IChunk");
