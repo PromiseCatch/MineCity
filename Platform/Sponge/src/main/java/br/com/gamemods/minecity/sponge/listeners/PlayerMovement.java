@@ -60,7 +60,7 @@ public class PlayerMovement implements CommonMovimentListener<Player>
     {
         Key.Builder<Entity, Value<Entity>> key = (Key.Builder<Entity, Value<Entity>>) Key.builder();
         leashedEntities.removeIf(entity -> !entity
-                .get(key.name("sponge").id("leash_holder").build())
+                .get(key.name("leash_holder").build())
                 .filter(holder -> holder.getUniqueId().equals(player.getUniqueId()))
                 .isPresent()
         );

@@ -12,13 +12,14 @@ import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class EntityDataManipulator extends AbstractSingleData<EntityData, EntityDataManipulator, EntityDataManipulator.ImmutableEntityData>
 {
     public EntityDataManipulator(EntityData value)
     {
-        super(value, MineCityKeys.ENTITY_DATA);
+        super(MineCityKeys.ENTITY_DATA, value);
     }
 
     @NotNull
@@ -39,7 +40,7 @@ public class EntityDataManipulator extends AbstractSingleData<EntityData, Entity
     public Optional<EntityDataManipulator> from(DataContainer container)
     {
         if(container.contains(MineCityKeys.ENTITY_DATA.getQuery()))
-            return Optional.of(set(MineCityKeys.ENTITY_DATA, (EntityData) container.get(MineCityKeys.ENTITY_DATA.getQuery()).orElse(null)));
+            return Optional.of(set(MineCityKeys.ENTITY_DATA, (EntityData) Objects.requireNonNull(container.get(MineCityKeys.ENTITY_DATA.getQuery()).orElse(null))));
 
         return Optional.empty();
     }
@@ -66,7 +67,7 @@ public class EntityDataManipulator extends AbstractSingleData<EntityData, Entity
     {
         public ImmutableEntityData(EntityData value)
         {
-            super(value, MineCityKeys.ENTITY_DATA);
+            super(MineCityKeys.ENTITY_DATA, value);
         }
 
         @Override

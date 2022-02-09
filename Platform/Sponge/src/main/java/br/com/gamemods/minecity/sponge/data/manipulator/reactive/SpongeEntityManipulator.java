@@ -34,9 +34,10 @@ public class SpongeEntityManipulator implements EntityManipulator, EntityReactor
             return opt;
 
         SpongeEntityData data = new SpongeEntityData(manipulator, entity);
-        DataTransactionResult result = entity.offer(new EntityDataManipulator(data));
-        if(!result.isSuccessful())
-            manipulator.sponge.logger.error("Failed to apply the entity data manipulator to the entity "+entity);
+        EntityDataManipulator entityDataManipulator = new EntityDataManipulator(data);
+//        DataTransactionResult result = entity.offer(entityDataManipulator);
+//        if(!result.isSuccessful())
+//            manipulator.sponge.logger.error("Failed to apply the entity data manipulator to the entity "+entity);
 
         return Optional.of(data);
     }

@@ -43,9 +43,12 @@ minecraft {
 
 mixin {
     config 'mixins.minecity.json'
-    disableTargetExport = true
-    disableTargetValidator = true
-    defaultObfuscationEnv 'searge'
+}
+
+sourceSets {
+    main {
+        ext.refMap = "mixins.minecity.refmap.json"
+    }
 }
 
 configurations {
@@ -74,8 +77,19 @@ reobf {
 
 jar {
     manifest.attributes(
-            'ForceLoadAsMod' : 'true'
+            'FMLCorePluginContainsFMLMod': 'true',
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'MixinConfigs': 'mixins.minecity.json',
+            'ForceLoadAsMod': 'true',
+            "Specification-Title": "minecity",
+            "Specification-Vendor": "minecity",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor": "minecity",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     )
+
 
 }
 jar.finalizedBy("reobfJar")
