@@ -75,8 +75,8 @@ configurations {
 }
 
 repositories {
-    maven { url = "http://maven.cil.li/" }
-    maven { url = "http://maven.ic2.player.to/" }
+    maven { url = "https://maven.cil.li/" }
+    maven { url = "https://maven.ic2.player.to/" }
 }
 
 dependencies {
@@ -93,8 +93,10 @@ dependencies {
 jar {
     manifest {
         attributes (
+                'Main-Class': 'br.com.gamemods.minecity.forge.mc_1_12_2.listeners.MineCityColorMod',
+                'TargetForgeBuild': '2859',
+                'TargetForgeVersion': '14.23.5',
                 'FMLCorePlugin': 'br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod',
-                'FMLCorePluginContainsFMLMod': 'true',
                 'FMLAT': 'minecity_at.cfg'
         )
     }

@@ -21,7 +21,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.SortingIndex(value = 1001)
 public class MineCityColorCoreMod implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
-    public Void call() throws  Exception {
+    public Void call() throws Exception {
         File mcDir = (File) FMLInjectionData.data()[6];
         new DepLoader(
                 new File(mcDir, "MineCity/libs"),
