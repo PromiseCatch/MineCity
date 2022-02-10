@@ -19,7 +19,11 @@ import br.com.gamemods.minecity.reactive.script.ScriptEngine;
 import br.com.gamemods.minecity.sponge.cmd.SpongeRootCommand;
 import br.com.gamemods.minecity.sponge.cmd.SpongeTransformer;
 import br.com.gamemods.minecity.sponge.core.mixed.MixedBlockType;
+import br.com.gamemods.minecity.sponge.data.manipulator.boxed.EntityDataManipulator;
+import br.com.gamemods.minecity.sponge.data.manipulator.boxed.ItemToolManipulator;
+import br.com.gamemods.minecity.sponge.data.manipulator.boxed.TileEntityDataManipulator;
 import br.com.gamemods.minecity.sponge.data.manipulator.reactive.SpongeManipulator;
+import br.com.gamemods.minecity.sponge.data.value.SpongeEntityData;
 import br.com.gamemods.minecity.sponge.listeners.ActionListener;
 import br.com.gamemods.minecity.sponge.listeners.DebugListener;
 import com.flowpowered.math.vector.Vector3i;
@@ -34,6 +38,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
@@ -63,9 +68,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Plugin(id="minecity", name="MineCity", version = "1.0.0", authors = "joserobjr", description = "MineCity for Sponge")
-public class MineCitySpongePlugin
-{
+@Plugin(id = "minecity", name = "MineCity", version = "1.0.0", authors = "joserobjr", description = "MineCity for Sponge")
+public class MineCitySpongePlugin {
     @Inject
     private Logger logger;
 
@@ -89,10 +93,8 @@ public class MineCitySpongePlugin
     private ScriptEngine engine;
 
     @Listener
-    public void onGameConstruct(GameConstructionEvent event)
-    {
-        try
-        {
+    public void onGameConstruct(GameConstructionEvent event) {
+        try {
             LegacyFormat.BLACK.server = TextColors.BLACK;
             LegacyFormat.DARK_BLUE.server = TextColors.DARK_BLUE;
             LegacyFormat.DARK_GREEN.server = TextColors.DARK_GREEN;
@@ -118,40 +120,32 @@ public class MineCitySpongePlugin
 
             Hand.MAIN.setInstance(HandTypes.MAIN_HAND);
             Hand.OFF.setInstance(HandTypes.OFF_HAND);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             Sponge.getServer().shutdown();
             throw e;
         }
     }
 
-    private double getOrSetDouble(ConfigurationNode node, double def)
-    {
+    private double getOrSetDouble(ConfigurationNode node, double def) {
         return getOrSet(node, def, node::getDouble);
     }
 
-    private int getOrSetInt(ConfigurationNode node, int def)
-    {
+    private int getOrSetInt(ConfigurationNode node, int def) {
         return getOrSet(node, def, node::getInt);
     }
 
-    private String getOrSetStr(ConfigurationNode node, String def)
-    {
+    private String getOrSetStr(ConfigurationNode node, String def) {
         return getOrSet(node, def, node::getString);
     }
 
-    private boolean getOrSetBool(ConfigurationNode node, boolean def)
-    {
+    private boolean getOrSetBool(ConfigurationNode node, boolean def) {
         return getOrSet(node, def, node::getBoolean);
     }
 
-    private <T> T getOrSet(ConfigurationNode node, T def, Supplier<T> getter)
-    {
+    private <T> T getOrSet(ConfigurationNode node, T def, Supplier<T> getter) {
         T obj = getter.get();
-        if(node.isVirtual() || obj == null)
-        {
+        if (node.isVirtual() || obj == null) {
             node.setValue(def);
             return def;
         }
@@ -160,23 +154,44 @@ public class MineCitySpongePlugin
     }
 
     @Listener
-    public void onGamePreInit(GamePreInitializationEvent event) throws IOException, SAXException
-    {
+    public void onGamePreInit(GamePreInitializationEvent event) throws IOException, SAXException {
+        DataRegistration.builder()
+                .dataClass(EntityDataManipulator.class)
+                .immutableClass(EntityDataManipulator.ImmutableEntityData.class)
+                .id("minecity-entity-data-manipulator")
+                .name("MineCity Entity Data Manipulator")
+                .builder(new EntityDataManipulator.Builder())
+                .build();
+
+        DataRegistration.builder()
+                .dataClass(ItemToolManipulator.class)
+                .immutableClass(ItemToolManipulator.Immutable.class)
+                .id("minecity-item-tool-manipulator")
+                .name("MineCity Item Tool Manipulator")
+                .builder(new ItemToolManipulator.Builder())
+                .build();
+
+        DataRegistration.builder()
+                .dataClass(TileEntityDataManipulator.class)
+                .immutableClass(TileEntityDataManipulator.Immutable.class)
+                .id("minecity-tile-entity-data-manipulator")
+                .name("MineCity TileEntity Data Manipulator")
+                .builder(new TileEntityDataManipulator.Builder())
+                .build();
+
         CommentedConfigurationNode root = configManager.load();
-        try
-        {
+        try {
             PermissionLayer.register("sponge", SpongeProviders.PERMISSION);
             EconomyLayer.register("sponge", SpongeProviders.ECONOMY);
 
             CommentedConfigurationNode dbConfig = root.getNode("database");
             MineCityConfig config = new MineCityConfig();
             config.dbUrl = getOrSetStr(dbConfig.getNode("url"), config.dbUrl);
-            config.dbUser = Optional.ofNullable(getOrSetStr(dbConfig.getNode("user"), "")).filter(u-> !u.isEmpty()).orElse(null);
-            config.dbPass = Optional.ofNullable(getOrSetStr(dbConfig.getNode("pass"), "")).filter(p-> !p.isEmpty()).map(String::getBytes).orElse(null);
-            config.locale = Locale.forLanguageTag(Optional.ofNullable(getOrSetStr(root.getNode("general", "language"), "en")).filter(l->!l.isEmpty()).orElse("en"));
+            config.dbUser = Optional.ofNullable(getOrSetStr(dbConfig.getNode("user"), "")).filter(u -> !u.isEmpty()).orElse(null);
+            config.dbPass = Optional.ofNullable(getOrSetStr(dbConfig.getNode("pass"), "")).filter(p -> !p.isEmpty()).map(String::getBytes).orElse(null);
+            config.locale = Locale.forLanguageTag(Optional.ofNullable(getOrSetStr(root.getNode("general", "language"), "en")).filter(l -> !l.isEmpty()).orElse("en"));
             config.useTitle = getOrSetBool(root.getNode("general", "use-titles"), true);
-            if(getOrSetBool(root.getNode("general", "debug"), false))
-            {
+            if (getOrSetBool(root.getNode("general", "debug"), false)) {
                 CityCommand.ENABLE_CACHE = false;
             }
 
@@ -185,8 +200,7 @@ public class MineCitySpongePlugin
             config.economy = getOrSetStr(root.getNode("manager", "economy"), "none");
             config.permission = getOrSetStr(root.getNode("manager", "permissions"), "sponge");
 
-            for(PermissionFlag flag: PermissionFlag.values())
-            {
+            for (PermissionFlag flag : PermissionFlag.values()) {
                 adjustDefaultFlag(permsConfig.getNode("nature", flag.name()), flag, flag.defaultNature, config.defaultNatureFlags);
                 adjustDefaultFlag(permsConfig.getNode("city", flag.name()), flag, flag.defaultCity, config.defaultCityFlags);
                 adjustDefaultFlag(permsConfig.getNode("plot", flag.name()), flag, flag.defaultPlot, config.defaultPlotFlags);
@@ -196,31 +210,21 @@ public class MineCitySpongePlugin
             transformer = new SpongeTransformer();
             transformer.parseXML(MineCity.class.getResourceAsStream("/assets/minecity/messages-en.xml"));
             lang = config.locale.toLanguageTag();
-            if(!lang.equals("en"))
-            {
-                try
-                {
-                    InputStream resource = MineCity.class.getResourceAsStream("/assets/minecity/messages-"+lang +".xml");
-                    if(resource != null)
-                    {
-                        try
-                        {
+            if (!lang.equals("en")) {
+                try {
+                    InputStream resource = MineCity.class.getResourceAsStream("/assets/minecity/messages-" + lang + ".xml");
+                    if (resource != null) {
+                        try {
                             transformer.parseXML(resource);
-                        }
-                        finally
-                        {
+                        } finally {
                             resource.close();
                         }
-                    }
-                    else
-                    {
-                        logger.error("There're no translations to "+lang+" available.");
+                    } else {
+                        logger.error("There're no translations to " + lang + " available.");
                         lang = "en";
                     }
-                }
-                catch(Exception e)
-                {
-                    logger.error("Failed to load the "+lang+" translations", e);
+                } catch (Exception e) {
+                    logger.error("Failed to load the " + lang + " translations", e);
                 }
             }
 
@@ -234,40 +238,34 @@ public class MineCitySpongePlugin
             config.costs.islandCreation = getOrSetDouble(costs.getNode("island", "creation"), 500);
             config.costs.claim = getOrSetDouble(costs.getNode("chunk", "claim"), 25);
             this.config = config;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             Sponge.getServer().shutdown();
             throw e;
-        }
-        finally
-        {
+        } finally {
             configManager.save(root);
         }
     }
 
-    private void adjustDefaultFlag(CommentedConfigurationNode node, PermissionFlag flag, boolean def, SimpleFlagHolder holder)
-    {
+    private void adjustDefaultFlag(CommentedConfigurationNode node, PermissionFlag flag, boolean def, SimpleFlagHolder holder) {
         boolean allow = getOrSetBool(node.getNode("allow"), def);
         String msg = getOrSetStr(node.getNode("message"), "");
 
-        if(!msg.isEmpty())
+        if (!msg.isEmpty())
             holder.getDefaultMessages().put(flag, Message.string(msg));
 
-        if(!allow)
+        if (!allow)
             holder.deny(flag);
     }
 
     @Command("reactive.reload")
-    public CommandResult<?> reloadReactions(CommandEvent cmd)
-    {
+    public CommandResult<?> reloadReactions(CommandEvent cmd) {
         SpongeManipulator manipulator = new SpongeManipulator(sponge);
         ReactiveLayer.setManipulator(manipulator);
         ReactiveLayer.setReactor(manipulator);
-        Sponge.getGame().getRegistry().getAllOf(BlockType.class).forEach(type-> {
+        Sponge.getGame().getRegistry().getAllOf(BlockType.class).forEach(type -> {
             ReactiveLayer.getBlockType(type).get().setReactive(null);
-            if(type instanceof MixedBlockType)
+            if (type instanceof MixedBlockType)
                 ((MixedBlockType) type).setBlockTypeData(null);
         });
         loadScripts();
@@ -275,27 +273,23 @@ public class MineCitySpongePlugin
     }
 
     @Command("dump.blocks")
-    public CommandResult<?> dumpBlocks(CommandEvent cmd) throws IOException
-    {
+    public CommandResult<?> dumpBlocks(CommandEvent cmd) throws IOException {
         TreeMap<String, String> roleMap = new TreeMap<>();
-        Sponge.getGame().getRegistry().getAllOf(BlockType.class).forEach(type-> {
+        Sponge.getGame().getRegistry().getAllOf(BlockType.class).forEach(type -> {
             String id = type.getId();
             roleMap.put(id, ReactiveLayer.getBlockType(type).flatMap(BlockTypeData::getReactiveBlockType)
-                    .map(it-> it.getBlockRole()+":"+it.getClass().getName()+" - "+type.getClass().getName()).orElse(null));
+                    .map(it -> it.getBlockRole() + ":" + it.getClass().getName() + " - " + type.getClass().getName()).orElse(null));
             type.getTraits().forEach(trait ->
             {
                 String traitId;
-                try
-                {
+                try {
                     traitId = trait.getId();
-                }
-                catch(NullPointerException e)
-                {
-                    logger.warn("The trait "+trait+" does not have an ID!");
-                    traitId = "NOID!"+trait.getName();
+                } catch (NullPointerException e) {
+                    logger.warn("The trait " + trait + " does not have an ID!");
+                    traitId = "NOID!" + trait.getName();
                 }
 
-                roleMap.put(id+" | "+traitId, ReactiveLayer
+                roleMap.put(id + " | " + traitId, ReactiveLayer
                         .getBlockTrait(trait)
                         .flatMap(BlockTraitData::getReactiveBlockTrait)
                         .map(it -> it.getClass().getName())
@@ -303,43 +297,34 @@ public class MineCitySpongePlugin
             });
         });
 
-        try(FileWriter fw = new FileWriter(configDir.resolve("dump_blocks.txt").toFile()); BufferedWriter out = new BufferedWriter(fw))
-        {
+        try (FileWriter fw = new FileWriter(configDir.resolve("dump_blocks.txt").toFile()); BufferedWriter out = new BufferedWriter(fw)) {
             out.write("// ");
             out.write(DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL).format(new Date()));
             out.newLine();
-            for(Map.Entry<String, String> entry : roleMap.entrySet())
-            {
-                if(!entry.getKey().contains(" | "))
+            for (Map.Entry<String, String> entry : roleMap.entrySet()) {
+                if (!entry.getKey().contains(" | "))
                     out.newLine();
 
-                out.write(entry.getKey()+" - "+entry.getValue());
+                out.write(entry.getKey() + " - " + entry.getValue());
                 out.newLine();
             }
         }
         return CommandResult.success();
     }
 
-    private void loadScript(String modId)
-    {
-        try
-        {
-            logger.info("Loading "+modId+".groovy");
+    private void loadScript(String modId) {
+        try {
+            logger.info("Loading " + modId + ".groovy");
             engine.load(modId);
-        }
-        catch(ResourceException e)
-        {
-            logger.warn("No reactive definition was found for "+modId);
-        }
-        catch(ScriptException e)
-        {
-            logger.error("An error has occurred while loading "+modId+"'s reactive definitions", e);
+        } catch (ResourceException e) {
+            logger.warn("No reactive definition was found for " + modId);
+        } catch (ScriptException e) {
+            logger.error("An error has occurred while loading " + modId + "'s reactive definitions", e);
             throw new UncheckedException(e);
         }
     }
 
-    private void loadScripts()
-    {
+    private void loadScripts() {
         logger.info("Gathering mod ids...");
         List<String> loadedMods = Sponge
                 .getPluginManager()
@@ -359,10 +344,8 @@ public class MineCitySpongePlugin
     }
 
     @Listener
-    public void onGameServerAboutToStart(GameAboutToStartServerEvent event) throws DataSourceException, SAXException, IOException
-    {
-        try
-        {
+    public void onGameServerAboutToStart(GameAboutToStartServerEvent event) throws DataSourceException, SAXException, IOException {
+        try {
             sponge = new MineCitySponge(this, config, transformer, logger);
             SpongeManipulator manipulator = new SpongeManipulator(sponge);
             ReactiveLayer.setManipulator(manipulator);
@@ -370,13 +353,13 @@ public class MineCitySpongePlugin
             sponge.mineCity.commands.registerCommands(this);
 
             Sponge.getEventManager().registerListeners(this, new ActionListener(sponge));
-            if(!CityCommand.ENABLE_CACHE)
+            if (!CityCommand.ENABLE_CACHE)
                 Sponge.getEventManager().registerListeners(this, new DebugListener(sponge));
 
             Path scripts = configDir.resolve("scripts");
             File scriptsDir = scripts.toFile();
-            if(!scriptsDir.isDirectory() && !scriptsDir.mkdirs())
-                logger.warn("Failed to create the directory: "+scriptsDir);
+            if (!scriptsDir.isDirectory() && !scriptsDir.mkdirs())
+                logger.warn("Failed to create the directory: " + scriptsDir);
 
             engine = new ScriptEngine(
                     scripts.toUri().toURL(),
@@ -388,9 +371,9 @@ public class MineCitySpongePlugin
             loadScripts();
 
             sponge.mineCity.dataSource.initDB();
-            sponge.mineCity.commands.parseXml(MineCity.class.getResourceAsStream("/assets/minecity/commands-"+lang+".xml"));
+            sponge.mineCity.commands.parseXml(MineCity.class.getResourceAsStream("/assets/minecity/commands-" + lang + ".xml"));
 
-            sponge.mineCity.commands.getRootCommands().forEach(name->
+            sponge.mineCity.commands.getRootCommands().forEach(name ->
                     Sponge.getCommandManager().register(this, new SpongeRootCommand(sponge, name), name)
             );
 
@@ -401,13 +384,11 @@ public class MineCitySpongePlugin
                     .delayTicks(1)
                     .submit(this);
 
-            playerTickTask =Sponge.getScheduler().createTaskBuilder()
-                    .execute(()-> Sponge.getServer().getOnlinePlayers().forEach(player -> sponge.player(player).tick()))
+            playerTickTask = Sponge.getScheduler().createTaskBuilder()
+                    .execute(() -> Sponge.getServer().getOnlinePlayers().forEach(player -> sponge.player(player).tick()))
                     .intervalTicks(1)
                     .submit(this);
-        }
-        catch(Throwable e)
-        {
+        } catch (Throwable e) {
             logger.error("Failed to load MineCity, shutting down the server", e);
             Sponge.getServer().shutdown();
             throw e;
@@ -415,47 +396,35 @@ public class MineCitySpongePlugin
     }
 
     @Listener
-    public void onGameServerStopped(GameStoppedServerEvent event)
-    {
-        if(sponge != null)
-        {
+    public void onGameServerStopped(GameStoppedServerEvent event) {
+        if (sponge != null) {
             sponge.loadingTasks.shutdown();
-            try
-            {
+            try {
                 sponge.loadingTasks.awaitTermination(5, TimeUnit.SECONDS);
-            }
-            catch(InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 logger.error("Failed to wait the loading tasks completes", e);
-                try
-                {
+                try {
                     sponge.loadingTasks.shutdownNow();
-                }
-                catch(Exception e2)
-                {
+                } catch (Exception e2) {
                     logger.error("Failed to shutdown the loading tasks", e2);
                 }
             }
 
-            try
-            {
+            try {
                 sponge.mineCity.dataSource.close();
-            }
-            catch(DataSourceException e)
-            {
+            } catch (DataSourceException e) {
                 logger.error("Failed to close the dataSource", e);
             }
         }
 
-        if(reloadTask != null)
+        if (reloadTask != null)
             reloadTask.cancel();
     }
 
     @Listener(order = Order.POST)
-    public void onWorldLoad(LoadWorldEvent event)
-    {
+    public void onWorldLoad(LoadWorldEvent event) {
         //logger.trace("WLA:"+event.getTargetWorld().getName());
-        sponge.loadingTasks.submit(()->
+        sponge.loadingTasks.submit(() ->
         {
             //logger.debug("WLB:"+event.getTargetWorld().getName());
             sponge.world(event.getTargetWorld());
@@ -463,10 +432,9 @@ public class MineCitySpongePlugin
     }
 
     @Listener(order = Order.POST)
-    public void onWorldUnload(UnloadWorldEvent event)
-    {
+    public void onWorldUnload(UnloadWorldEvent event) {
         //logger.trace("WUA:"+event.getTargetWorld().getName());
-        sponge.loadingTasks.submit(()->
+        sponge.loadingTasks.submit(() ->
         {
             //logger.debug("WUB:"+event.getTargetWorld().getName());
             sponge.mineCity.unloadNature(sponge.world(event.getTargetWorld()));
@@ -474,8 +442,7 @@ public class MineCitySpongePlugin
     }
 
     @Listener(order = Order.PRE)
-    public void onChunkLoadPre(LoadChunkEvent event)
-    {
+    public void onChunkLoadPre(LoadChunkEvent event) {
         Chunk chunk = event.getTargetChunk();
         //logger.info("CLPA:"+ReactiveLayer.getReactiveChunk(chunk));
         Vector3i pos = chunk.getPosition();
@@ -483,23 +450,19 @@ public class MineCitySpongePlugin
     }
 
     @Listener(order = Order.POST)
-    public void onChunkLoad(LoadChunkEvent event)
-    {
+    public void onChunkLoad(LoadChunkEvent event) {
         Chunk chunk = event.getTargetChunk();
         //logger.trace("CLA:"+chunk);
-        sponge.loadingTasks.submit(()->
+        sponge.loadingTasks.submit(() ->
         {
             //logger.debug("CLB:"+chunk);
-            try
-            {
+            try {
                 sponge.mineCity.loadChunk(sponge.chunk(chunk));
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 Vector3i position = chunk.getPosition();
                 logger.error(
-                        "Failed to load the chunk "+
-                                chunk.getWorld().getName()+" "+position.getX()+" "+position.getY()+" "+position.getZ(),
+                        "Failed to load the chunk " +
+                                chunk.getWorld().getName() + " " + position.getX() + " " + position.getY() + " " + position.getZ(),
                         e
                 );
             }
@@ -507,28 +470,25 @@ public class MineCitySpongePlugin
     }
 
     @Listener(order = Order.POST)
-    public void onChunkUnload(UnloadChunkEvent event)
-    {
+    public void onChunkUnload(UnloadChunkEvent event) {
         //logger.trace("CUA:"+event.getTargetChunk()+"");
-        sponge.loadingTasks.submit(()-> {
+        sponge.loadingTasks.submit(() -> {
             //logger.debug("CUB:"+event.getTargetChunk()+"");
             sponge.mineCity.unloadChunk(sponge.chunk(event.getTargetChunk()));
         });
     }
 
     @Listener(order = Order.PRE)
-    public void onEntitySpawn(SpawnEntityEvent event)
-    {
+    public void onEntitySpawn(SpawnEntityEvent event) {
         event.getEntities().forEach(ReactiveLayer::getEntityData);
     }
 
     @Override
-    public String toString()
-    {
-        return "MineCitySpongePlugin{"+
-                "configDir="+configDir+
-                ", lang='"+lang+'\''+
-                ", sponge="+sponge+
+    public String toString() {
+        return "MineCitySpongePlugin{" +
+                "configDir=" + configDir +
+                ", lang='" + lang + '\'' +
+                ", sponge=" + sponge +
                 '}';
     }
 }
