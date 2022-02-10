@@ -179,6 +179,8 @@ public class MineCitySpongePlugin {
                 .builder(new TileEntityDataManipulator.Builder())
                 .build();
 
+//        Sponge.getDataManager().registerBuilder(SpongeEntityData.class, new SpongeEntityData.SpongeEntityDataBuilder());
+
         CommentedConfigurationNode root = configManager.load();
         try {
             PermissionLayer.register("sponge", SpongeProviders.PERMISSION);

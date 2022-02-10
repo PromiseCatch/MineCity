@@ -14,6 +14,8 @@ import br.com.gamemods.minecity.reactive.ReactiveLayer;
 import br.com.gamemods.minecity.reactive.game.block.ReactiveBlock;
 import br.com.gamemods.minecity.reactive.game.block.data.BlockSnapshotData;
 import br.com.gamemods.minecity.reactive.game.block.data.supplier.SupplierBlockSnapshotData;
+import br.com.gamemods.minecity.reactive.game.entity.ReactiveEntity;
+import br.com.gamemods.minecity.reactive.game.entity.data.EntityData;
 import br.com.gamemods.minecity.reactive.game.item.ReactiveItemStack;
 import br.com.gamemods.minecity.sponge.cmd.*;
 import br.com.gamemods.minecity.sponge.core.mixed.MixedEntity;
@@ -322,6 +324,10 @@ public class MineCitySponge implements Server
                 ReactiveLayer.getChunk(chunk).get(),
                 ReactiveLayer.getBlockSnapshotData(snapshot).get()
         );
+    }
+
+    public ReactiveEntity reactiveEntity(EntityData entityData) {
+        return new ReactiveEntity(entityData);
     }
 
     public PrecisePoint precisePoint(Vector3d point)

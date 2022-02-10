@@ -67,7 +67,7 @@ public class ItemToolManipulator extends AbstractSingleData<Integer, ItemToolMan
 
     @Override
     public DataContainer toContainer() {
-        return super.toContainer().set(MineCityKeys.ITEM_TOOL.getQuery(), getValue());
+        return super.toContainer().set(MineCityKeys.ITEM_TOOL, getValue());
     }
 
     public static class Immutable extends AbstractImmutableSingleData<Integer, Immutable, ItemToolManipulator>
@@ -93,6 +93,11 @@ public class ItemToolManipulator extends AbstractSingleData<Integer, ItemToolMan
         public int getContentVersion()
         {
             return 1;
+        }
+
+        @Override
+        public DataContainer toContainer() {
+            return super.toContainer().set(MineCityKeys.ITEM_TOOL, getValue());
         }
     }
 

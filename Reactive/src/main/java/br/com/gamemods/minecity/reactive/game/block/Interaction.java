@@ -43,6 +43,7 @@ public final class Interaction
         this.block = block;
         this.blockFace = blockFace;
         this.clickPoint = clickPoint;
+        this.sneaking = sneaking;
     }
 
     public boolean hasBlock()
@@ -153,6 +154,10 @@ public final class Interaction
     public InteractReaction getReactionItemLast()
     {
         return reactionItemLast;
+    }
+
+    public boolean isSneaking() {
+        return sneaking;
     }
 
     public enum Click

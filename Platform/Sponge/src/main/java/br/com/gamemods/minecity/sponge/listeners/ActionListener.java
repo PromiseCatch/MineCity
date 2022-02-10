@@ -29,14 +29,17 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandType;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.block.InteractBlockEvent;
+import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.event.filter.cause.Last;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.util.Tristate;
 import org.spongepowered.api.world.Location;
@@ -49,38 +52,33 @@ import java.util.function.Consumer;
 
 import static java.util.stream.Collectors.toList;
 
-public class ActionListener
-{
+public class ActionListener {
     private final MineCitySponge sponge;
 
     @Nullable
     private HandInteractEvent lastEntityInteractEvent;
 
-    public ActionListener(MineCitySponge sponge)
-    {
+    public ActionListener(MineCitySponge sponge) {
         this.sponge = sponge;
     }
 
     @Listener(order = Order.POST)
-    public void onInteract(HandInteractEvent event, @First Entity entity)
-    {
+    public void onInteract(HandInteractEvent event, @First Entity entity) {
         lastEntityInteractEvent = event;
     }
 
     @Nullable
-    private ReactiveItemStack getStackFromEntity(Entity entity, HandType hand)
-    {
+    private ReactiveItemStack getStackFromEntity(Entity entity, HandType hand) {
         return entity instanceof ArmorEquipable
-                ? sponge.reactiveStack(((ArmorEquipable)entity).getItemInHand(hand).orElse(null))
+                ? sponge.reactiveStack(((ArmorEquipable) entity).getItemInHand(hand).orElse(null))
                 : null;
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onItemSpawn(SpawnEntityEvent event)
-    {
-        event.getEntities().removeIf(subject-> {
+    public void onItemSpawn(SpawnEntityEvent event) {
+        event.getEntities().removeIf(subject -> {
             Optional<ReactiveEntity> opt = ReactiveLayer.getEntityReactor().getReactiveEntity(subject);
-            if(!opt.isPresent())
+            if (!opt.isPresent())
                 return false;
 
             MinecraftEntity entity = sponge.entity(subject);
@@ -88,42 +86,57 @@ public class ActionListener
         });
     }
 
+    public void onInteractEntity(InteractEntityEvent.Secondary event, @First Player player, @Last Entity entity) {
+        HandType handType = event.getHandType();
+        Hand hand = Hand.from(handType);
+        Entity target = event.getTargetEntity();
+
+        int tool = player.getItemInHand(handType).flatMap(stack -> stack.get(MineCityKeys.ITEM_TOOL)).orElse(0);
+
+        if (tool == 1) {
+            event.setCancelled(true);
+            return;
+        }
+
+        PrecisePoint point = event.getInteractionPoint().map(sponge::precisePoint).orElse(null);
+
+        EntityData playerData = ReactiveLayer.getEntityData(player).get();
+        EntityData entityData = ReactiveLayer.getEntityData(entity).get();
+        ReactiveEntity reactiveEntity = sponge.reactiveEntity(entityData);
+
+
+    }
+
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onInteractBlock(InteractBlockEvent.Secondary event, @First Entity subject)
-    {
+    public void onInteractBlock(InteractBlockEvent.Secondary event, @First Entity subject) {
         HandType handType = event.getHandType();
         Hand hand = Hand.from(handType);
         BlockSnapshot targetBlock = event.getTargetBlock();
         boolean nothing = targetBlock == BlockSnapshot.NONE;
 
-        if(subject instanceof Player && !nothing)
-        {
+        if (subject instanceof Player && !nothing) {
             Player player = (Player) subject;
             int tool = player
                     .getItemInHand(handType)
                     .flatMap(stack -> stack.get(MineCityKeys.ITEM_TOOL))
-                    .orElse(0)
-                    ;
+                    .orElse(0);
 
-            if(tool == 1)
-            {
+            if (tool == 1) {
                 event.setCancelled(true);
 
                 BlockPos block = sponge.blockPos(targetBlock.getLocation().get());
                 DisplayedSelection<?> selection = sponge.player(player).getSelection(block.world);
 
-                if(player.get(Keys.IS_SNEAKING).orElse(false))
-                {
-                    if(hand == Hand.OFF)
+                if (player.get(Keys.IS_SNEAKING).orElse(false)) {
+                    if (hand == Hand.OFF)
                         selection.b = block;
                     else
                         selection.a = block;
 
                     selection.normalize();
                     Task.builder().async().execute(selection::updateDisplay).submit(sponge.plugin);
-                }
-                else
-                    Task.builder().async().execute(()->selection.select(block)).submit(sponge.plugin);
+                } else
+                    Task.builder().async().execute(() -> selection.select(block)).submit(sponge.plugin);
 
                 return;
             }
@@ -133,36 +146,35 @@ public class ActionListener
         PrecisePoint point = event.getInteractionPoint().map(sponge::precisePoint).orElse(null);
 
         EntityData entity = ReactiveLayer.getEntityData(subject).get();
-        ReactiveBlock block = nothing? null : sponge.reactiveBlock(targetBlock, subject.getWorld());
+        ReactiveBlock block = nothing ? null : sponge.reactiveBlock(targetBlock, subject.getWorld());
         ReactiveItemStack stack = getStackFromEntity(subject, handType);
 
-        InteractReaction reaction = entity.onRightClick(hand, stack, block, side, point);
+        boolean sneaking = entity.getEntity() instanceof Player && ((Player) entity.getEntity()).get(Keys.IS_SNEAKING).orElse(false);
+
+        InteractReaction reaction = entity.onRightClick(hand, stack, block, side, point, sneaking);
 
         Permissible sender = sponge.permissible(subject);
         AtomicBoolean notify = new AtomicBoolean(true);
         if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
-        reaction.getAction().can(sponge.mineCity, sender).ifPresent(denial-> {
+        reaction.getAction().can(sponge.mineCity, sender).ifPresent(denial -> {
             event.setCancelled(true);
-            if(notify.get())
-            {
+            if (notify.get()) {
                 sender.send(FlagHolder.wrapDeny(denial));
                 notify.set(false);
             }
         });
 
-        reaction.getUseItem().can(sponge.mineCity, sender).ifPresent(denial-> {
+        reaction.getUseItem().can(sponge.mineCity, sender).ifPresent(denial -> {
             event.setUseItemResult(Tristate.FALSE);
-            if(notify.get())
-            {
+            if (notify.get()) {
                 sender.send(FlagHolder.wrapDeny(denial));
                 notify.set(false);
             }
         });
 
-        reaction.getUseBlock().can(sponge.mineCity, sender).ifPresent(denial-> {
+        reaction.getUseBlock().can(sponge.mineCity, sender).ifPresent(denial -> {
             event.setUseBlockResult(Tristate.FALSE);
-            if(notify.get())
-            {
+            if (notify.get()) {
                 sender.send(FlagHolder.wrapDeny(denial));
                 notify.set(false);
             }
@@ -170,8 +182,7 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onInteractBlock(InteractBlockEvent.Primary event, @First Entity subject)
-    {
+    public void onInteractBlock(InteractBlockEvent.Primary event, @First Entity subject) {
         HandType handType = event.getHandType();
         Hand hand = Hand.from(handType);
         BlockSnapshot targetBlock = event.getTargetBlock();
@@ -181,18 +192,18 @@ public class ActionListener
         PrecisePoint point = event.getInteractionPoint().map(sponge::precisePoint).orElse(null);
 
         EntityData entity = ReactiveLayer.getEntityData(subject).get();
-        ReactiveBlock block = nothing? null : sponge.reactiveBlock(targetBlock, subject.getWorld());
+        ReactiveBlock block = nothing ? null : sponge.reactiveBlock(targetBlock, subject.getWorld());
         ReactiveItemStack stack = getStackFromEntity(subject, handType);
+        boolean sneaking = entity.getEntity() instanceof Player && ((Player) entity.getEntity()).get(Keys.IS_SNEAKING).orElse(false);
 
-        InteractReaction reaction = entity.onLeftClick(hand, stack, block, side, point);
+        InteractReaction reaction = entity.onLeftClick(hand, stack, block, side, point, sneaking);
 
         Permissible sender = sponge.permissible(subject);
         AtomicBoolean notify = new AtomicBoolean(true);
 
-        Consumer<Message> deny = denial-> {
+        Consumer<Message> deny = denial -> {
             event.setCancelled(true);
-            if(notify.get())
-            {
+            if (notify.get()) {
                 sender.send(FlagHolder.wrapDeny(denial));
                 notify.set(false);
             }
@@ -205,42 +216,35 @@ public class ActionListener
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockPlaceByEntity(ChangeBlockEvent.Place event, @First Entity subject)
-    {
+    public void onBlockPlaceByEntity(ChangeBlockEvent.Place event, @First Entity subject) {
         onBlockChangeByEntity(event, subject, EntityData::onBlockPlace);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockBreakByEntity(ChangeBlockEvent.Break event, @First Entity subject)
-    {
+    public void onBlockBreakByEntity(ChangeBlockEvent.Break event, @First Entity subject) {
         onBlockChangeByEntity(event, subject, EntityData::onBlockBreak);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockReplaceByEntity(ChangeBlockEvent.Modify event, @First Entity subject)
-    {
+    public void onBlockReplaceByEntity(ChangeBlockEvent.Modify event, @First Entity subject) {
         onBlockChangeByEntity(event, subject, EntityData::onBlockReplace);
     }
 
-    @Listener(order  = Order.FIRST, beforeModifications = true)
-    public void onBlockGrowByEntity(ChangeBlockEvent.Grow event, @First Entity subject)
-    {
+    @Listener(order = Order.FIRST, beforeModifications = true)
+    public void onBlockGrowByEntity(ChangeBlockEvent.Grow event, @First Entity subject) {
         onBlockChangeByEntity(event, subject, EntityData::onBlockGrow);
     }
 
-    private EntityData requireEntity(Entity entity)
-    {
+    private EntityData requireEntity(Entity entity) {
         return ReactiveLayer.getEntityData(entity).get();
     }
 
-    private void onBlockChangeByEntity(ChangeBlockEvent event, Entity subject, BiFunction<EntityData, Modification, Reaction> operation)
-    {
+    private void onBlockChangeByEntity(ChangeBlockEvent event, Entity subject, BiFunction<EntityData, Modification, Reaction> operation) {
         Hand hand = null;
         ReactiveItemStack stack = null;
 
         HandInteractEvent interact = this.lastEntityInteractEvent;
-        if(interact != null)
-        {
+        if (interact != null) {
             HandType handType = interact.getHandType();
             hand = Hand.from(handType);
             stack = getStackFromEntity(subject, handType);
@@ -249,43 +253,36 @@ public class ActionListener
         onBlockChange(event, subject, requireEntity(subject), hand, stack, operation);
     }
 
-    private BlockSnapshotData requireBlock(BlockSnapshot snapshot)
-    {
+    private BlockSnapshotData requireBlock(BlockSnapshot snapshot) {
         return ReactiveLayer.getBlockSnapshotData(snapshot).get();
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockPlaceByBlock(ChangeBlockEvent.Place event, @First BlockSnapshot subject)
-    {
+    public void onBlockPlaceByBlock(ChangeBlockEvent.Place event, @First BlockSnapshot subject) {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockPlace);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockBreakByBlock(ChangeBlockEvent.Break event, @First BlockSnapshot subject)
-    {
+    public void onBlockBreakByBlock(ChangeBlockEvent.Break event, @First BlockSnapshot subject) {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockBreak);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockReplaceByBlock(ChangeBlockEvent.Modify event, @First BlockSnapshot subject)
-    {
+    public void onBlockReplaceByBlock(ChangeBlockEvent.Modify event, @First BlockSnapshot subject) {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockReplace);
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockGrowByBlock(ChangeBlockEvent.Grow event, @First BlockSnapshot subject)
-    {
+    public void onBlockGrowByBlock(ChangeBlockEvent.Grow event, @First BlockSnapshot subject) {
         onBlockChangeByBlock(event, subject, BlockSnapshotData::onBlockGrow);
     }
 
-    private void onBlockChangeByBlock(ChangeBlockEvent event, BlockSnapshot source, BiFunction<BlockSnapshotData, Modification, Reaction> operation)
-    {
+    private void onBlockChangeByBlock(ChangeBlockEvent event, BlockSnapshot source, BiFunction<BlockSnapshotData, Modification, Reaction> operation) {
         onBlockChange(event, source, requireBlock(source), null, null, operation);
     }
 
     private <D> void onBlockChange(ChangeBlockEvent event, Object subject, D cause, @Nullable Hand hand,
-                                   @Nullable ReactiveItemStack stack, BiFunction<D, Modification, Reaction> operation)
-    {
+                                   @Nullable ReactiveItemStack stack, BiFunction<D, Modification, Reaction> operation) {
         List<BlockChange> changeList = event.getTransactions().stream()
                 .map(tran -> new BlockChange(
                         ReactiveLayer.getBlockSnapshotData(tran.getOriginal()).get(),
@@ -297,24 +294,22 @@ public class ActionListener
 
         Permissible sender = sponge.permissible(subject);
         if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
-        reaction.can(sponge.mineCity, sender).ifPresent(reason-> {
+        reaction.can(sponge.mineCity, sender).ifPresent(reason -> {
             event.setCancelled(true);
             sender.send(FlagHolder.wrapDeny(reason));
         });
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockChangePre(ChangeBlockEvent.Pre event, @First Entity subject)
-    {
+    public void onBlockChangePre(ChangeBlockEvent.Pre event, @First Entity subject) {
         HandInteractEvent interact = this.lastEntityInteractEvent;
-        if(interact != null && interact.getCause().first(Entity.class).orElse(null) != subject)
+        if (interact != null && interact.getCause().first(Entity.class).orElse(null) != subject)
             interact = null;
 
         Hand hand = null;
         ReactiveItemStack stack = null;
 
-        if(interact != null)
-        {
+        if (interact != null) {
             HandType handType = interact.getHandType();
             hand = Hand.from(handType);
             stack = getStackFromEntity(subject, handType);
@@ -330,15 +325,14 @@ public class ActionListener
 
         Permissible sender = sponge.permissible(subject);
         if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
-        reaction.can(sponge.mineCity, sender).ifPresent(reason-> {
+        reaction.can(sponge.mineCity, sender).ifPresent(reason -> {
             event.setCancelled(true);
             sender.send(FlagHolder.wrapDeny(reason));
         });
     }
 
     @Listener(order = Order.FIRST, beforeModifications = true)
-    public void onBlockChangePre(ChangeBlockEvent.Pre event, @First BlockSnapshot subject)
-    {
+    public void onBlockChangePre(ChangeBlockEvent.Pre event, @First BlockSnapshot subject) {
         BlockSnapshotData snapshot = ReactiveLayer.getBlockSnapshotData(subject).get();
         List<BlockSnapshotData> changeList = event.getLocations().stream()
                 .map(Location::createSnapshot).map(ReactiveLayer::getBlockSnapshotData)
@@ -349,17 +343,16 @@ public class ActionListener
 
         Permissible sender = sponge.permissible(subject);
         if (sender instanceof PlayerSender && ((PlayerSender) sender).isAdminMode()) return;
-        reaction.can(sponge.mineCity, sender).ifPresent(reason-> {
+        reaction.can(sponge.mineCity, sender).ifPresent(reason -> {
             event.setCancelled(true);
             sender.send(FlagHolder.wrapDeny(reason));
         });
     }
 
     @Override
-    public String toString()
-    {
-        return "ActionListener{"+
-                "lastEntityInteractEvent="+lastEntityInteractEvent+
+    public String toString() {
+        return "ActionListener{" +
+                "lastEntityInteractEvent=" + lastEntityInteractEvent +
                 '}';
     }
 }

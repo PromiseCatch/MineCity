@@ -2,6 +2,7 @@ package br.com.gamemods.minecity.sponge.data.manipulator.boxed;
 
 import br.com.gamemods.minecity.reactive.game.block.data.TileEntityData;
 import br.com.gamemods.minecity.reactive.game.entity.data.EntityData;
+import br.com.gamemods.minecity.sponge.data.value.SpongeEntityData;
 import com.google.common.reflect.TypeToken;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
@@ -10,9 +11,9 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 public class MineCityKeys
 {
-    public static final Key<Value<EntityData>> ENTITY_DATA = KeyFactory.makeSingleKey(
-            TypeToken.of(EntityData.class),
-            new TypeToken<Value<EntityData>>(){},
+    public static final Key<Value<SpongeEntityData>> ENTITY_DATA = KeyFactory.makeSingleKey(
+            TypeToken.of(SpongeEntityData.class),
+            new TypeToken<Value<SpongeEntityData>>(){},
             DataQuery.of("MineCityEntity"), "minecity:entity", "Entity Data"
     );
 

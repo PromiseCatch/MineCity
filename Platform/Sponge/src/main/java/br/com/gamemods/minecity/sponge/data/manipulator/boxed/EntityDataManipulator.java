@@ -21,9 +21,9 @@ import org.spongepowered.api.data.value.mutable.Value;
 import java.util.Objects;
 import java.util.Optional;
 
-public class EntityDataManipulator extends AbstractSingleData<EntityData, EntityDataManipulator, EntityDataManipulator.ImmutableEntityData>
+public class EntityDataManipulator extends AbstractSingleData<SpongeEntityData, EntityDataManipulator, EntityDataManipulator.ImmutableEntityData>
 {
-    public EntityDataManipulator(EntityData value)
+    public EntityDataManipulator(SpongeEntityData value)
     {
         super(MineCityKeys.ENTITY_DATA, value);
     }
@@ -32,21 +32,24 @@ public class EntityDataManipulator extends AbstractSingleData<EntityData, Entity
     @Override
     protected Value<?> getValueGetter()
     {
-        return Sponge.getRegistry().getValueFactory().createValue(MineCityKeys.ENTITY_DATA, getValue().getEntityData());
+        return Sponge.getRegistry().getValueFactory().createValue(MineCityKeys.ENTITY_DATA, getValue());
     }
 
     @Override
     public Optional<EntityDataManipulator> fill(DataHolder dataHolder, MergeFunction overlap)
     {
-        EntityDataManipulator warpData = Preconditions.checkNotNull(overlap).merge(copy(), from(dataHolder.toContainer()).orElse(null));
-        return Optional.of(set(MineCityKeys.ENTITY_DATA, warpData.get(MineCityKeys.ENTITY_DATA).get()));
+        EntityDataManipulator entityData = Preconditions.checkNotNull(overlap).merge(copy(), dataHolder.get(EntityDataManipulator.class).orElse(null));
+        setValue(entityData.getValue());
+        return Optional.of(this);
     }
 
     @Override
     public Optional<EntityDataManipulator> from(DataContainer container)
     {
-        if(container.contains(MineCityKeys.ENTITY_DATA.getQuery()))
-            return Optional.of(set(MineCityKeys.ENTITY_DATA, (EntityData) Objects.requireNonNull(container.getSerializable(MineCityKeys.ENTITY_DATA.getQuery(), EntityDataManipulator.class).orElse(null))));
+        if(container.contains(MineCityKeys.ENTITY_DATA.getQuery())) {
+            SpongeEntityData entityData = container.getSerializable(MineCityKeys.ENTITY_DATA.getQuery(), SpongeEntityData.class).get();
+            return Optional.of(setValue(entityData));
+        }
 
         return Optional.empty();
     }
@@ -74,9 +77,10 @@ public class EntityDataManipulator extends AbstractSingleData<EntityData, Entity
         return 1;
     }
 
-    public static class ImmutableEntityData extends AbstractImmutableSingleData<EntityData, ImmutableEntityData, EntityDataManipulator>
+
+    public static class ImmutableEntityData extends AbstractImmutableSingleData<SpongeEntityData, ImmutableEntityData, EntityDataManipulator>
     {
-        public ImmutableEntityData(EntityData value)
+        public ImmutableEntityData(SpongeEntityData value)
         {
             super(MineCityKeys.ENTITY_DATA, value);
         }
@@ -99,6 +103,11 @@ public class EntityDataManipulator extends AbstractSingleData<EntityData, Entity
             return 1;
         }
 
+        @Override
+        public DataContainer toContainer() {
+            return super.toContainer().set(MineCityKeys.ENTITY_DATA.getQuery(), getValue());
+        }
+
     }
 
     public static class Builder implements DataManipulatorBuilder<EntityDataManipulator, ImmutableEntityData> {
@@ -115,7 +124,11 @@ public class EntityDataManipulator extends AbstractSingleData<EntityData, Entity
 
         @Override
         public Optional<EntityDataManipulator> build(DataView container) throws InvalidDataException {
-            return create().from(container.getContainer());
+            if (!container.contains(MineCityKeys.ENTITY_DATA.getQuery())) {
+                return Optional.empty();
+            }
+            SpongeEntityData data = container.getSerializable(MineCityKeys.ENTITY_DATA.getQuery(), SpongeEntityData.class).get();
+            return Optional.of(new EntityDataManipulator(data));
         }
     }
 }

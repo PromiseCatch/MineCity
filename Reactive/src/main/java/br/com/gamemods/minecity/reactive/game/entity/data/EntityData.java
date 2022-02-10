@@ -25,8 +25,8 @@ import java.util.function.BiFunction;
 
 public interface EntityData extends SupplierEntityData
 {
-    Object getEntity();
 
+    Object getEntity();
     /**
      * The current entity position
      *

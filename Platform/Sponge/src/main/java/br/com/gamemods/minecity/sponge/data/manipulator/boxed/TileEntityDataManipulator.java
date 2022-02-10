@@ -31,7 +31,7 @@ public class TileEntityDataManipulator extends SingleData<TileEntityData, TileEn
 
     @Override
     public DataContainer toContainer() {
-        return super.toContainer().set(MineCityKeys.TILE_ENTITY_DATA.getQuery(), getValue());
+        return super.toContainer().set(MineCityKeys.TILE_ENTITY_DATA, getValue());
     }
 
     public static class Immutable extends SingleData.Immutable<TileEntityData, TileEntityDataManipulator, TileEntityDataManipulator.Immutable>
@@ -49,8 +49,9 @@ public class TileEntityDataManipulator extends SingleData<TileEntityData, TileEn
 
         @Override
         public DataContainer toContainer() {
-            return super.toContainer().set(MineCityKeys.TILE_ENTITY_DATA.getQuery(), getValue());
+            return super.toContainer().set(MineCityKeys.TILE_ENTITY_DATA, getValue());
         }
+
     }
 
     public static class Builder implements DataManipulatorBuilder<TileEntityDataManipulator, Immutable> {
