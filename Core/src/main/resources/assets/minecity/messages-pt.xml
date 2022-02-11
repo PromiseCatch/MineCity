@@ -24,7 +24,7 @@
                     <msg id="pvc.no-exception"><red><b>Ninguém</b></red> pode atacar criaturas em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
                     <msg id="modify.no-exception"><red><b>Ninguém</b></red> pode modificar ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
                     <msg id="click.no-exception"><red><b>Ninguém</b></red> pode clicar em coisas em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
-                    <msg id="open.no-exception"><red><b>Ninguém</b></red> pode abrir contêiners em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
+                    <msg id="open.no-exception"><red><b>Ninguém</b></red> pode abrir contêineres em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
                     <msg id="vehicle.no-exception"><red><b>Ninguém</b></red> pode colocar veículos em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
                     <msg id="ride.no-exception"><red><b>Ninguém</b></red> pode utilizar veículos de ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
                 </nobody>
@@ -36,7 +36,7 @@
                     <msg id="pvc.no-exception"><green><b>Todos</b></green> podem atacar criaturas em ${name}</msg>
                     <msg id="modify.no-exception"><green><b>Todos</b></green> podem modificar ${name}</msg>
                     <msg id="click.no-exception"><green><b>Todos</b></green> podem clicar em coisas em ${name}</msg>
-                    <msg id="open.no-exception"><green><b>Todos</b></green> podem abrir contêiners em ${name}</msg>
+                    <msg id="open.no-exception"><green><b>Todos</b></green> podem abrir contêineres em ${name}</msg>
                     <msg id="vehicle.no-exception"><green><b>Todos</b></green> podem colocar veículos em ${name}</msg>
                     <msg id="ride.no-exception"><green><b>Todos</b></green> podem utilizar veículos de ${name}</msg>
                 </everybody>
@@ -69,7 +69,7 @@
                         <msg id="info">Colher plantações, lãs e leite das vacas</msg>
                     </harvest>
                     <msg id="open.name">ABRIR</msg>
-                    <msg id="open.info">Abrir contêiners como baús, molduras e fornalhas</msg>
+                    <msg id="open.info">Abrir contêineres como baús, molduras e fornalhas</msg>
                     <pvp>
                         <msg id="name">PVP</msg>
                         <msg id="info">Atacar outros jogadores</msg>
@@ -83,7 +83,7 @@
                         <msg id="info">Fazer modificações estruturais e decorativas</msg>
                     </modify>
                     <vehicle>
-                        <msg id="name">VEICULOS</msg>
+                        <msg id="name">VEÍCULOS</msg>
                         <msg id="info">Colocar veículos</msg>
                     </vehicle>
                     <ride>
@@ -146,7 +146,7 @@
                 <msg id="free">O preço não pode ser menor que ${minimum}</msg>
                 <msg id="confirm-new-sell">Você está prestes a vender a cidade ${city} por ${price}. Se você estiver certo disso digite /cidade confirmar ${code}</msg>
                 <msg id="confirm-price-change">Você está prestes a mudar o preço da cidade ${city} de ${from} para ${to}. Se você estiver certo disso digite /cidade confirmar ${code}</msg>
-                <msg id="success">A cidade ${city} agora está a venda por ${price}. Digiter /cidade abortar venda se você mudar de ideia.</msg>
+                <msg id="success">A cidade ${city} agora está a venda por ${price}. Digite /cidade abortar venda se você mudar de ideia.</msg>
             </sell>
             <buy>
                 <msg id="not-claimed">Você não está dentro de uma cidade</msg>
@@ -240,8 +240,8 @@
                         <br/><red>${msg}</red><br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
-                    <msg id="open.no-exception"><red><b>Ninguém</b></red> pode abrir contêiners em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
-                    <msg id="open.except"><red><b>Ninguém</b></red> <yellow>(${count} excessões)</yellow> pode abrir contêiners em ${name}, isto será mostrado quando alguém tentar:
+                    <msg id="open.no-exception"><red><b>Ninguém</b></red> pode abrir contêineres em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
+                    <msg id="open.except"><red><b>Ninguém</b></red> <yellow>(${count} excessões)</yellow> pode abrir contêineres em ${name}, isto será mostrado quando alguém tentar:
                         <br/><red>${msg}</red><br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
@@ -308,8 +308,8 @@
                         <br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
-                    <msg id="open.no-exception"><green><b>Todos</b></green> podem abrir contêiners em ${name}</msg>
-                    <msg id="open.except"><green><b>Todos</b></green> <yellow>(${count} excessões)</yellow> podem abrir contêiners em ${name}
+                    <msg id="open.no-exception"><green><b>Todos</b></green> podem abrir contêineres em ${name}</msg>
+                    <msg id="open.except"><green><b>Todos</b></green> <yellow>(${count} excessões)</yellow> podem abrir contêineres em ${name}
                         <br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
@@ -376,7 +376,7 @@
                         <msg id="info">Colher plantações, lãs e leite das vacas</msg>
                     </harvest>
                     <msg id="open.name">ABRIR</msg>
-                    <msg id="open.info">Abrir contêiners como baús, molduras e fornalhas</msg>
+                    <msg id="open.info">Abrir contêineres como baús, molduras e fornalhas</msg>
                     <pvp>
                         <msg id="name">PVP</msg>
                         <msg id="info">Atacar outros jogadores</msg>
@@ -390,7 +390,7 @@
                         <msg id="info">Fazer modificações estruturais e decorativas</msg>
                     </modify>
                     <vehicle>
-                        <msg id="name">VEICULOS</msg>
+                        <msg id="name">VEÍCULOS</msg>
                         <msg id="info">Colocar veículos</msg>
                     </vehicle>
                     <ride>
@@ -438,7 +438,7 @@
                     irão ser apagados. Não haverá como desfazer isso e este é o último aviso!<br/><br/>
                     Você tem certeza disso? Se você ainda quer apagar a cidade digite /cidade confirmar ${code}
                 </msg>
-                <msg id="success">A cidade ${city} foi excluida</msg>
+                <msg id="success">A cidade ${city} foi excluída</msg>
             </delete>
             <create>
                 <msg id="arg.name">nome</msg>
@@ -450,7 +450,7 @@
                 </name>
                 <chunk>
                     <msg id="not-loaded">O chunk em que você está não foi carregado adequadamente</msg>
-                    <msg id="claimed">O chunk em que você está já foi reinvindicado por ${city}</msg>
+                    <msg id="claimed">O chunk em que você está já foi reivindicado por ${city}</msg>
                     <msg id="reserved">O chunk em que você está foi reservado para ${city}</msg>
                 </chunk>
                 <economy>
@@ -465,8 +465,8 @@
             </create>
             <claim>
                 <msg id="arg.city">cidade</msg>
-                <msg id="disabled">Não é permitido reinvindicar chunks de ${nature}</msg>
-                <msg id="already-claimed">Este chunk já foi reinvindicado por ${city}</msg>
+                <msg id="disabled">Não é permitido reivindicar chunks de ${nature}</msg>
+                <msg id="already-claimed">Este chunk já foi reivindicado por ${city}</msg>
                 <msg id="reserved">Este chunk está reservado para ${name}</msg>
                 <msg id="ambiguous">Ambas as cidades ${1} e ${2} estão tocando este chunk, repita o comando especificando o nome da cidade desejada.</msg>
                 <msg id="not-nearby">
@@ -475,19 +475,19 @@
                     digite /cidade criar
                 </msg>
                 <msg id="not-found">Nenhuma cidade se chama $[name}, se você quiser criar uma nova cidade então digite /cidade criar</msg>
-                <msg id="no-permission">Você não tem permissão para reinvindicar chunks em nome de ${city}</msg>
+                <msg id="no-permission">Você não tem permissão para reivindicar chunks em nome de ${city}</msg>
                 <economy>
-                    <msg id="insufficient-funds">Fundos insuficientes, você precisa de ${money} para reinvindicar este chunk para ${city}.</msg>
+                    <msg id="insufficient-funds">Fundos insuficientes, você precisa de ${money} para reivindicar este chunk para ${city}.</msg>
                     <msg id="error-unknown">Oopss... Ocorreu um erro desconhecido enquanto a sua transação era processada.</msg>
                     <msg id="error">A compra falhou: ${error}</msg>
                 </economy>
                 <limits>
                     <msg id="reached">A cidade ${city} atingiu o número máximo de ilhas que ela pode ter.</msg>
                 </limits>
-                <msg id="success">Este chunk foi reinvindicado por ${city} com sucesso.</msg>
+                <msg id="success">Este chunk foi reivindicado por ${city} com sucesso.</msg>
             </claim>
             <disclaim>
-                <msg id="not-claimed">Este chunk não foi reinvindicado por nenhuma cidade</msg>
+                <msg id="not-claimed">Este chunk não foi reivindicado por nenhuma cidade</msg>
                 <msg id="no-permission">Você não pode renunciar chunks em nome de ${city}</msg>
                 <msg id="last">Não é possível renunciar o último chunk da cidade, apague a cidade ao invés disso</msg>
                 <msg id="spawn">Não é possível renunciar o chunk do ponto de entrada da cidade</msg>
@@ -542,7 +542,7 @@
                 <msg id="not-claimed">Você não está dentro de uma cidade</msg>
                 <msg id="no-permission">Você não possui permissão para alterar o ponto de entrada de ${name}</msg>
                 <msg id="already">Esta posição já é o ponto de entrada da cidade</msg>
-                <msg id="success">O ponto de entrada de ${name} foi alterado com sucess</msg>
+                <msg id="success">O ponto de entrada de ${name} foi alterado com sucesso</msg>
                 <economy>
                     <msg id="insufficient-funds">Fundos insuficientes, você precisa de ${money} para definir aqui como o ponto de entrada da cidade</msg>
                     <msg id="error-unknown">Oopss... Ocorreu um erro desconhecido enquanto a sua transação era processada.</msg>
@@ -652,7 +652,7 @@
             </deny>
             <allow>
                 <msg id="not-claimed">Você não está dentro de uma cidade</msg>
-                <msg id="no-permission">Você não está autoriazado a mudar as permissões de ${city}</msg>
+                <msg id="no-permission">Você não está autorizado a mudar as permissões de ${city}</msg>
                 <msg id="got-city-expected-player">Você digitou um nome de cidade, digite um nome de jogador ao invés disso para permitir um jogador específico ou digite um nome de grupo após o nome da cidade para permitir o grupo diretamente. <b>Não use espaço nos nomes.</b></msg>
                 <msg id="player-not-found">Nenhum jogador foi encontrado com o nome ${name}</msg>
                 <msg id="too-many-args">Você digitou argumentos demais, você não pode especificar uma razão ao permitir alguém.</msg>
@@ -661,7 +661,7 @@
                 <msg id="success">A permissão foi concedida por padrão com sucesso</msg>
                 <msg id="success.player">A permissão foi concedida para ${player} com sucesso</msg>
                 <msg id="success.group">A permissão foi concedida para o grupo ${group} de ${home} com sucesso</msg>
-                <msg id="all.args.count">Este comeando não aceita argumentos extras, você tem certeza que quer dar permissão para todos?</msg>
+                <msg id="all.args.count">Este commando não aceita argumentos extras, você tem certeza que quer dar permissão para todos?</msg>
                 <enter>
                     <arg>
                         <msg id="player-or-city">jogador ou cidade</msg>
@@ -728,7 +728,7 @@
             </allow>
             <clear>
                 <msg id="not-claimed">Você não está dentro de uma cidade</msg>
-                <msg id="no-permission">Você não está autoriazado a mudar as permissões de ${city}</msg>
+                <msg id="no-permission">Você não está autorizado a mudar as permissões de ${city}</msg>
                 <msg id="got-city-expected-player">Você digitou um nome de cidade, digite um nome de jogador ao invés disso para resetar um jogador específico ou digite um nome de grupo após o nome da cidade para resetar o grupo diretamente. <b>Não use espaço nos nomes.</b></msg>
                 <msg id="player-not-found">Nenhum jogador foi encontrado com o nome ${name}</msg>
                 <msg id="too-many-args">Você digitou argumentos demais, você não pode especificar uma razão ao resetar as permissões de alguém.</msg>
@@ -738,7 +738,7 @@
                 <msg id="success">A permissão foi concedida por padrão com sucesso</msg>
                 <msg id="success.player">A permissão direta foi removida de ${player} com sucesso, a permissão padrão irá ser aplicada agora.</msg>
                 <msg id="success.group">A permissão direta foi removida do grupo ${group} de ${home} com sucesso, a permissão padrão será aplicada agora.</msg>
-                <msg id="all.args.count">Este comeando não aceita argumentos extras, você tem certeza que quer resetar as permissões de todos?</msg>
+                <msg id="all.args.count">Este commando não aceita argumentos extras, você tem certeza que quer resetar as permissões de todos?</msg>
                 <enter>
                     <arg>
                         <msg id="player-or-city">jogador ou cidade</msg>
@@ -799,8 +799,8 @@
             </clear>
             <auto>
                 <claim>
-                    <msg id="enabled">A reinvidicação automática foi ativada</msg>
-                    <msg id="disabled">A reinvidicação automática foi desativada</msg>
+                    <msg id="enabled">A reivindicação automática foi ativada</msg>
+                    <msg id="disabled">A reivindicação automática foi desativada</msg>
                 </claim>
             </auto>
         </city>
@@ -945,13 +945,13 @@
                     Você tem certeza que você quer excluir o grupo ${group} da cidade ${city}? Ele possui ${count} membros: ${members}<br/><br/>
                     Se você tiver certeza, digite /grupo confirmar ${confirm}
                 </msg>
-                <msg id="success">O grupo ${group} de ${city} foi exluído com sucesso</msg>
+                <msg id="success">O grupo ${group} de ${city} foi excluído com sucesso</msg>
             </delete>
         </group>
         <confirm>
             <msg id="arg.confirmation-code">código</msg>
             <msg id="args">Digite o código de confirmação para confirmar a ação ou apenas ignore se você não quiser mais continuar.</msg>
-            <msg id="invalid">Você digitou um código incorreto, se você quiser abortar a operção basta não digitar o comando de confirmação.</msg>
+            <msg id="invalid">Você digitou um código incorreto, se você quiser abortar a operação basta não digitar o comando de confirmação.</msg>
             <msg id="expired"><darkred>MineCity> </darkred><red>A ação não foi confirmada a tempo e o código de confirmação expirou.</red></msg>
             <msg id="not-pending">Você não tem nenhum código de confirmação pendente</msg>
         </confirm>
@@ -988,7 +988,7 @@
                     <aqua>Local:</aqua> ${nature-name} <gray>X:</gray> ${spawn-x} <gray>Y:</gray> ${spawn-y} <gray>Z:</gray> ${spawn-z}<br/>
                     <aqua>Tamanho:</aqua> ${area-squared}m² <aqua>Tamanho:</aqua> ${size-x} <aqua>Profundidade:</aqua> ${size-z}<br/>
                     <aqua>Área:</aqua> ${area-cube}m³ <aqua>Altura:</aqua> ${size-y}<br/>
-                    <aqua>Preço:</aqua> ${preço}</white><br/>
+                    <aqua>Preço:</aqua> ${price}</white><br/>
                     <br/><darkgreen>----------------------------------</darkgreen>
                 </msg>
             </info>
@@ -1010,7 +1010,7 @@
                 <msg id="free">O preço não pode ser menor que ${minimum}</msg>
                 <msg id="confirm-new-sell">Você está prestes a vender o lote ${plot} que não está a vend e está dentro da cidade ${city} por ${price}. Se você estiver certo disso digite /lote confirmar ${code}</msg>
                 <msg id="confirm-price-change">Você está prestes a mudar o preço do lote ${plot} que está dentro da cidade ${city} de ${from} para ${to}. Se você estiver certo disso digite /lote confirmar ${code}</msg>
-                <msg id="success">O lote ${plot} agora está a venda por ${price}. Digiter /lote abortar venda se você mudar de ideia.</msg>
+                <msg id="success">O lote ${plot} agora está a venda por ${price}. Digite /lote abortar venda se você mudar de ideia.</msg>
             </sell>
             <buy>
                 <msg id="not-claimed">Você não está dentro de um lote</msg>
@@ -1118,8 +1118,8 @@
                         <br/><red>${msg}</red><br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
-                    <msg id="open.no-exception"><red><b>Ninguém</b></red> pode abrir contêiners em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
-                    <msg id="open.except"><red><b>Ninguém</b></red> <yellow>(${count} excessões)</yellow> pode abrir contêiners em ${name}, isto será mostrado quando alguém tentar:
+                    <msg id="open.no-exception"><red><b>Ninguém</b></red> pode abrir contêineres em ${name}, isto será mostrado quando alguém tentar:<br/><red>${msg}</red></msg>
+                    <msg id="open.except"><red><b>Ninguém</b></red> <yellow>(${count} excessões)</yellow> pode abrir contêineres em ${name}, isto será mostrado quando alguém tentar:
                         <br/><red>${msg}</red><br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
@@ -1186,8 +1186,8 @@
                         <br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
-                    <msg id="open.no-exception"><green><b>Todos</b></green> podem abrir contêiners em ${name}</msg>
-                    <msg id="open.except"><green><b>Todos</b></green> <yellow>(${count} excessões)</yellow> podem abrir contêiners em ${name}
+                    <msg id="open.no-exception"><green><b>Todos</b></green> podem abrir contêineres em ${name}</msg>
+                    <msg id="open.except"><green><b>Todos</b></green> <yellow>(${count} excessões)</yellow> podem abrir contêineres em ${name}
                         <br/><br/>
                         <yellow>Excessões:</yellow><br/>${exceptions}
                     </msg>
@@ -1269,7 +1269,7 @@
                         <msg id="info">Colher plantações, lãs e leite das vacas</msg>
                     </harvest>
                     <msg id="open.name">ABRIR</msg>
-                    <msg id="open.info">Abrir contêiners como baús, molduras e fornalhas</msg>
+                    <msg id="open.info">Abrir contêineres como baús, molduras e fornalhas</msg>
                     <pvp>
                         <msg id="name">PVP</msg>
                         <msg id="info">Atacar outros jogadores</msg>
@@ -1283,7 +1283,7 @@
                         <msg id="info">Fazer modificações estruturais e decorativas</msg>
                     </modify>
                     <vehicle>
-                        <msg id="name">VEICULOS</msg>
+                        <msg id="name">VEÍCULOS</msg>
                         <msg id="info">Colocar veículos</msg>
                     </vehicle>
                     <ride>
@@ -1347,7 +1347,7 @@
                 <msg id="outside">Fique dentro do lote e execute este comando novamente.</msg>
                 <msg id="conflict">O nome ${name} conflita com ${conflict}</msg>
                 <overlaps>
-                    <msg id="unclaimed">A área selecionada sobrepõe um chunk não reinvindicado em: X: ${x} e Z: ${z}</msg>
+                    <msg id="unclaimed">A área selecionada sobrepõe um chunk não reivindicado em: X: ${x} e Z: ${z}</msg>
                     <msg id="plots">A área selecionada sobrepõe ${count} lotes: ${plots}</msg>
                     <msg id="plot">A área selecionada sobrepõe o lote ${name}</msg>
                 </overlaps>
@@ -1594,7 +1594,7 @@
                 <msg id="success">Todas as permissões diretas foram removidas com sucesso, a permissão padrão será aplicada agora</msg>
                 <msg id="success.player">A permissão direta foi removida de ${player} com sucesso, a permissão padrão irá ser aplicada agora.</msg>
                 <msg id="success.group">A permissão direta foi removida do grupo ${group} de ${home} com sucesso, a permissão padrão será aplicada agora.</msg>
-                <msg id="all.args.count">Este comeando não aceita argumentos extras, você tem certeza que quer resetar as permissões de todos?</msg>
+                <msg id="all.args.count">Este commando não aceita argumentos extras, você tem certeza que quer resetar as permissões de todos?</msg>
                 <enter>
                     <arg>
                         <msg id="player-or-city">jogador ou cidade</msg>
@@ -1841,7 +1841,7 @@
     </economy>
     <mode>
         <adm>
-            <msg id="enabled">O Modo Administrador foi ativado, tudo será gratúito, sem limites e restrições</msg>
+            <msg id="enabled">O Modo Administrador foi ativado, tudo será gratuito, sem limites e restrições</msg>
             <msg id="disabled">O Modo Administrador foi desativado, restrições limites e preços serão aplicados</msg>
             <msg id="notification">O Modo Administrador está ativado e interferiu no resultado de verificação</msg>
         </adm>

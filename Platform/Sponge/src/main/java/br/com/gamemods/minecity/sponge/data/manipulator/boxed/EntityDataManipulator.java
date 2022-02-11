@@ -1,31 +1,30 @@
 package br.com.gamemods.minecity.sponge.data.manipulator.boxed;
 
-import br.com.gamemods.minecity.reactive.game.entity.data.EntityData;
+import br.com.gamemods.minecity.reactive.ReactiveLayer;
+import br.com.gamemods.minecity.sponge.MineCitySponge;
+import br.com.gamemods.minecity.sponge.MineCitySpongePlugin;
+import br.com.gamemods.minecity.sponge.data.manipulator.reactive.SpongeManipulator;
 import br.com.gamemods.minecity.sponge.data.value.SpongeEntityData;
 import com.google.common.base.Preconditions;
-import net.minecraft.network.datasync.DataSerializers;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
-import org.spongepowered.api.data.DataSerializable;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
-import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
-import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.persistence.InvalidDataException;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
+import scala.tools.cmd.Opt;
 
-import java.util.Objects;
 import java.util.Optional;
 
-public class EntityDataManipulator extends AbstractSingleData<SpongeEntityData, EntityDataManipulator, EntityDataManipulator.ImmutableEntityData>
+public class EntityDataManipulator extends SingleData<SpongeEntityData, EntityDataManipulator, EntityDataManipulator.ImmutableEntityData>
 {
     public EntityDataManipulator(SpongeEntityData value)
     {
-        super(MineCityKeys.ENTITY_DATA, value);
+        super(value, MineCityKeys.ENTITY_DATA);
     }
 
     @NotNull
@@ -78,11 +77,11 @@ public class EntityDataManipulator extends AbstractSingleData<SpongeEntityData, 
     }
 
 
-    public static class ImmutableEntityData extends AbstractImmutableSingleData<SpongeEntityData, ImmutableEntityData, EntityDataManipulator>
+    public static class ImmutableEntityData extends SingleData.Immutable<SpongeEntityData, EntityDataManipulator, ImmutableEntityData>
     {
         public ImmutableEntityData(SpongeEntityData value)
         {
-            super(MineCityKeys.ENTITY_DATA, value);
+            super(value, MineCityKeys.ENTITY_DATA );
         }
 
         @Override
@@ -114,7 +113,7 @@ public class EntityDataManipulator extends AbstractSingleData<SpongeEntityData, 
 
         @Override
         public EntityDataManipulator create() {
-            return new EntityDataManipulator(new SpongeEntityData(null, null));
+            return new EntityDataManipulator(new SpongeEntityData((SpongeManipulator) ReactiveLayer.getManipulator(), null));
         }
 
         @Override
@@ -124,7 +123,10 @@ public class EntityDataManipulator extends AbstractSingleData<SpongeEntityData, 
 
         @Override
         public Optional<EntityDataManipulator> build(DataView container) throws InvalidDataException {
-            if (!container.contains(MineCityKeys.ENTITY_DATA.getQuery())) {
+            if (MineCitySpongePlugin.getPluginContainer() == null || true) {
+                return Optional.empty();
+            }
+            if (!container.contains(MineCityKeys.ENTITY_DATA)) {
                 return Optional.empty();
             }
             SpongeEntityData data = container.getSerializable(MineCityKeys.ENTITY_DATA.getQuery(), SpongeEntityData.class).get();

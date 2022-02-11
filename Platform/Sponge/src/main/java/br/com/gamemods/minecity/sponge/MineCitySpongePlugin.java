@@ -43,10 +43,7 @@ import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
-import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
-import org.spongepowered.api.event.game.state.GameConstructionEvent;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
+import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.event.world.chunk.LoadChunkEvent;
@@ -68,7 +65,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Plugin(id = "minecity", name = "MineCity", version = "1.0.0", authors = "joserobjr", description = "MineCity for Sponge")
+@Plugin(id = "minecity", name = "MineCity", authors = "joserobjr")
 public class MineCitySpongePlugin {
     @Inject
     private Logger logger;
@@ -91,6 +88,12 @@ public class MineCitySpongePlugin {
     private Task reloadTask;
     private Task playerTickTask;
     private ScriptEngine engine;
+
+    private static PluginContainer staticContainer;
+
+    public static PluginContainer getPluginContainer() {
+        return staticContainer;
+    }
 
     @Listener
     public void onGameConstruct(GameConstructionEvent event) {
@@ -120,6 +123,7 @@ public class MineCitySpongePlugin {
 
             Hand.MAIN.setInstance(HandTypes.MAIN_HAND);
             Hand.OFF.setInstance(HandTypes.OFF_HAND);
+            staticContainer = container;
         } catch (Exception e) {
             e.printStackTrace();
             Sponge.getServer().shutdown();
@@ -155,32 +159,6 @@ public class MineCitySpongePlugin {
 
     @Listener
     public void onGamePreInit(GamePreInitializationEvent event) throws IOException, SAXException {
-        DataRegistration.builder()
-                .dataClass(EntityDataManipulator.class)
-                .immutableClass(EntityDataManipulator.ImmutableEntityData.class)
-                .id("minecity-entity-data-manipulator")
-                .name("MineCity Entity Data Manipulator")
-                .builder(new EntityDataManipulator.Builder())
-                .build();
-
-        DataRegistration.builder()
-                .dataClass(ItemToolManipulator.class)
-                .immutableClass(ItemToolManipulator.Immutable.class)
-                .id("minecity-item-tool-manipulator")
-                .name("MineCity Item Tool Manipulator")
-                .builder(new ItemToolManipulator.Builder())
-                .build();
-
-        DataRegistration.builder()
-                .dataClass(TileEntityDataManipulator.class)
-                .immutableClass(TileEntityDataManipulator.Immutable.class)
-                .id("minecity-tile-entity-data-manipulator")
-                .name("MineCity TileEntity Data Manipulator")
-                .builder(new TileEntityDataManipulator.Builder())
-                .build();
-
-//        Sponge.getDataManager().registerBuilder(SpongeEntityData.class, new SpongeEntityData.SpongeEntityDataBuilder());
-
         CommentedConfigurationNode root = configManager.load();
         try {
             PermissionLayer.register("sponge", SpongeProviders.PERMISSION);
@@ -222,7 +200,7 @@ public class MineCitySpongePlugin {
                             resource.close();
                         }
                     } else {
-                        logger.error("There're no translations to " + lang + " available.");
+                        logger.error("There are no translations to " + lang + " available.");
                         lang = "en";
                     }
                 } catch (Exception e) {
@@ -246,6 +224,37 @@ public class MineCitySpongePlugin {
             throw e;
         } finally {
             configManager.save(root);
+        }
+    }
+
+    @Listener
+    public void onGameInitialize(GameInitializationEvent event) {
+        try {
+            DataRegistration.builder()
+                    .dataClass(EntityDataManipulator.class)
+                    .immutableClass(EntityDataManipulator.ImmutableEntityData.class)
+                    .id("minecity-entity-data-manipulator")
+                    .name("MineCity Entity Data Manipulator")
+                    .builder(new EntityDataManipulator.Builder())
+                    .build();
+
+            DataRegistration.builder()
+                    .dataClass(ItemToolManipulator.class)
+                    .immutableClass(ItemToolManipulator.Immutable.class)
+                    .id("minecity-item-tool-manipulator")
+                    .name("MineCity Item Tool Manipulator")
+                    .builder(new ItemToolManipulator.Builder())
+                    .build();
+
+            DataRegistration.builder()
+                    .dataClass(TileEntityDataManipulator.class)
+                    .immutableClass(TileEntityDataManipulator.Immutable.class)
+                    .id("minecity-tile-entity-data-manipulator")
+                    .name("MineCity TileEntity Data Manipulator")
+                    .builder(new TileEntityDataManipulator.Builder())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -17,6 +17,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.spongepowered.plugin' version '0.9.0'
+}
+
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
@@ -24,6 +28,19 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+sponge {
+    plugin {
+        meta {
+            id = 'minecity'
+            name = 'MineCity'
+            version = project.version
+            authors = ['joserobjr']
+            description = 'City based protection plugin'
+            url = 'https://gihub.com/GameModsBR/MineCity'
+        }
+    }
+}
 
 dependencies {
     shadow project(':Reactive')
@@ -35,10 +52,6 @@ dependencies {
 
 minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
-//    makeObfSourceJar = false
-//
-//    replace '@VERSION@', project.version
-//    replace '@DESC@', 'City based protection plugin'
 }
 
 mixin {

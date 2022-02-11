@@ -53,8 +53,11 @@
         <group id="city.check" parent="city" cmd="check">
             <desc>Shows details about permissions</desc>
         </group>
-        <group id="city.cancel" parent="city" cmd="cancel,abort">
+        <group id="city.abort" parent="city" cmd="cancel,abort">
             <desc>Cancels an action related to the city</desc>
+        </group>
+        <group id="city.abort.sell" parent="city.abort" cmd="sell">
+            <desc>Cancels a sell action</desc>
         </group>
         <group id="plot.allow" parent="plot" cmd="allow">
             <desc>Gives permission</desc>
