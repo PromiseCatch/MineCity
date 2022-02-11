@@ -5,19 +5,23 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
+import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
+import org.spongepowered.api.data.persistence.InvalidDataException;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class ItemToolManipulator extends AbstractSingleData<Integer, ItemToolManipulator, ItemToolManipulator.Immutable>
 {
     public ItemToolManipulator(Integer value)
     {
-        super(value, MineCityKeys.ITEM_TOOL);
+        super(MineCityKeys.ITEM_TOOL, value);
     }
 
     @NotNull
@@ -38,7 +42,7 @@ public class ItemToolManipulator extends AbstractSingleData<Integer, ItemToolMan
     public Optional<ItemToolManipulator> from(DataContainer container)
     {
         if(container.contains(MineCityKeys.ITEM_TOOL.getQuery()))
-            return Optional.of(set(MineCityKeys.ITEM_TOOL, (Integer) container.get(MineCityKeys.ITEM_TOOL.getQuery()).orElse(null)));
+            return Optional.of(set(MineCityKeys.ITEM_TOOL, (Integer) Objects.requireNonNull(container.get(MineCityKeys.ITEM_TOOL.getQuery()).orElse(null))));
 
         return Optional.empty();
     }
@@ -61,11 +65,16 @@ public class ItemToolManipulator extends AbstractSingleData<Integer, ItemToolMan
         return 1;
     }
 
+    @Override
+    public DataContainer toContainer() {
+        return super.toContainer().set(MineCityKeys.ITEM_TOOL, getValue());
+    }
+
     public static class Immutable extends AbstractImmutableSingleData<Integer, Immutable, ItemToolManipulator>
     {
         public Immutable(Integer value)
         {
-            super(value, MineCityKeys.ITEM_TOOL);
+            super(MineCityKeys.ITEM_TOOL, value);
         }
 
         @Override
@@ -84,6 +93,29 @@ public class ItemToolManipulator extends AbstractSingleData<Integer, ItemToolMan
         public int getContentVersion()
         {
             return 1;
+        }
+
+        @Override
+        public DataContainer toContainer() {
+            return super.toContainer().set(MineCityKeys.ITEM_TOOL, getValue());
+        }
+    }
+
+    public static class Builder implements DataManipulatorBuilder<ItemToolManipulator, Immutable> {
+
+        @Override
+        public ItemToolManipulator create() {
+            return new ItemToolManipulator(0);
+        }
+
+        @Override
+        public Optional<ItemToolManipulator> createFrom(DataHolder dataHolder) {
+            return create().fill(dataHolder);
+        }
+
+        @Override
+        public Optional<ItemToolManipulator> build(DataView container) throws InvalidDataException {
+            return create().from(container.getContainer());
         }
     }
 }

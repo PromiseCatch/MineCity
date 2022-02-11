@@ -18,11 +18,14 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.profile.GameProfile;
+import org.spongepowered.api.world.BlockChangeFlags;
 import org.spongepowered.api.world.Chunk;
 import org.spongepowered.api.world.extent.BlockVolume;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 public class SpongeChunkData implements ChunkData
 {
@@ -81,7 +84,7 @@ public class SpongeChunkData implements ChunkData
         {
             return chunk
                     .getWorld()
-                    .setBlock(pos.x, pos.y, pos.z, BlockTypes.AIR.getDefaultState(), manipulator.sponge.cause());
+                    .setBlock(pos.x, pos.y, pos.z, BlockTypes.AIR.getDefaultState(), BlockChangeFlags.ALL);
         }
         catch(Throwable e)
         {
@@ -97,7 +100,7 @@ public class SpongeChunkData implements ChunkData
         {
             return chunk
                     .getWorld()
-                    .setBlock(pos.x, pos.y, pos.z, (BlockState) state.getBlockState(), manipulator.sponge.cause());
+                    .setBlock(pos.x, pos.y, pos.z, (BlockState) state.getBlockState(), BlockChangeFlags.ALL);
         }
         catch(Throwable e)
         {
@@ -128,7 +131,7 @@ public class SpongeChunkData implements ChunkData
         entity.offer(Keys.PICKUP_DELAY, 10);
         return entity.offer(Keys.REPRESENTED_ITEM, stack.createSnapshot()).isSuccessful()
                 && setAir(pos)
-                && chunk.getWorld().spawnEntity(entity, manipulator.sponge.cause());
+                && chunk.getWorld().spawnEntity(entity);
     }
 
     @Override
@@ -138,7 +141,7 @@ public class SpongeChunkData implements ChunkData
         {
             try
             {
-                return chunk.getWorld().digBlock(pos.x, pos.y, pos.z, manipulator.sponge.cause());
+                return chunk.getWorld().digBlock(pos.x, pos.y, pos.z, GameProfile.of((UUID) getOwner(pos.toBlock(getChunkPos().world)).getUniqueId()));
             }
             catch(AbstractMethodError error)
             {

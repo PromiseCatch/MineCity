@@ -14,6 +14,8 @@ import br.com.gamemods.minecity.reactive.ReactiveLayer;
 import br.com.gamemods.minecity.reactive.game.block.ReactiveBlock;
 import br.com.gamemods.minecity.reactive.game.block.data.BlockSnapshotData;
 import br.com.gamemods.minecity.reactive.game.block.data.supplier.SupplierBlockSnapshotData;
+import br.com.gamemods.minecity.reactive.game.entity.ReactiveEntity;
+import br.com.gamemods.minecity.reactive.game.entity.data.EntityData;
 import br.com.gamemods.minecity.reactive.game.item.ReactiveItemStack;
 import br.com.gamemods.minecity.sponge.cmd.*;
 import br.com.gamemods.minecity.sponge.core.mixed.MixedEntity;
@@ -30,6 +32,7 @@ import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
@@ -77,7 +80,7 @@ public class MineCitySponge implements Server
 
     public Cause cause()
     {
-        return Cause.source(plugin.container).build();
+        return Cause.builder().append(plugin.container).build(EventContext.empty());
     }
 
     public ChunkPos chunk(Chunk chunk)
@@ -321,6 +324,10 @@ public class MineCitySponge implements Server
                 ReactiveLayer.getChunk(chunk).get(),
                 ReactiveLayer.getBlockSnapshotData(snapshot).get()
         );
+    }
+
+    public ReactiveEntity reactiveEntity(EntityData entityData) {
+        return new ReactiveEntity(entityData);
     }
 
     public PrecisePoint precisePoint(Vector3d point)

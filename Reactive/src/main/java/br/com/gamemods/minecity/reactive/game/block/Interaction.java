@@ -31,9 +31,10 @@ public final class Interaction
     private InteractReaction reactionItemFirst = new InteractReaction();
     private InteractReaction reactionBlock = new InteractReaction();
     private InteractReaction reactionItemLast = new InteractReaction();
+    private boolean sneaking;
 
     public Interaction(Click click, EntityData entity, Hand hand, ReactiveItemStack itemStack,
-                       @Nullable ReactiveBlock block, @Nullable Direction blockFace, PrecisePoint clickPoint)
+                       @Nullable ReactiveBlock block, @Nullable Direction blockFace, PrecisePoint clickPoint, boolean sneaking)
     {
         this.click = click;
         this.entity = entity;
@@ -42,6 +43,7 @@ public final class Interaction
         this.block = block;
         this.blockFace = blockFace;
         this.clickPoint = clickPoint;
+        this.sneaking = sneaking;
     }
 
     public boolean hasBlock()
@@ -152,6 +154,10 @@ public final class Interaction
     public InteractReaction getReactionItemLast()
     {
         return reactionItemLast;
+    }
+
+    public boolean isSneaking() {
+        return sneaking;
     }
 
     public enum Click

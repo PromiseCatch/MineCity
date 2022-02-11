@@ -1,7 +1,7 @@
 package minecity.enderio
 
-import crazypants.enderio.conduit.*
-import crazypants.enderio.conduit.facade.BlockConduitFacade
+import crazypants.enderio.conduits.conduit.AbstractConduit
+import crazypants.enderio.conduits.conduit.BlockConduitBundle
 import minecity.forge.Wrench
 
 blockType(['enderio:blockTravelAnchor', 'enderio:blockDialingDevice']) {
@@ -12,7 +12,7 @@ itemType(AbstractConduit) {
     setReactive new Conduit()
 }
 
-blockType([BlockConduitBundle, BlockConduitFacade]) {
+blockType([BlockConduitBundle, 'enderio:conduit_bundle_opaque']) {
     setReactive new Conduit()
 }
 

@@ -2,6 +2,7 @@ package br.com.gamemods.minecity.sponge.core.mixin;
 
 import br.com.gamemods.minecity.reactive.ReactiveLayer;
 import br.com.gamemods.minecity.reactive.game.entity.data.EntityData;
+import br.com.gamemods.minecity.reactive.game.entity.data.EntityManipulator;
 import br.com.gamemods.minecity.sponge.core.mixed.MixedEntity;
 import br.com.gamemods.minecity.sponge.data.value.SpongeMinecraftEntity;
 import net.minecraft.entity.Entity;

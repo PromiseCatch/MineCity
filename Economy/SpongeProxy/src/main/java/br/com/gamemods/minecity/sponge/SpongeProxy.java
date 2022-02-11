@@ -15,6 +15,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
@@ -185,7 +186,7 @@ public class SpongeProxy implements EconomyProxy, PermissionProxy
             return new OperationResult(true, delta.doubleValue());
         }
 
-        TransactionResult transaction = account.withdraw(currency, bigAmount, Cause.source(this).build());
+        TransactionResult transaction = account.withdraw(currency, bigAmount, Cause.builder().append(this).build(EventContext.empty()));
         ResultType result = transaction.getResult();
         if(result == ResultType.SUCCESS)
             return new OperationResult(true, transaction.getAmount().subtract(bigAmount).doubleValue());
@@ -209,7 +210,7 @@ public class SpongeProxy implements EconomyProxy, PermissionProxy
             return new OperationResult(true, delta.doubleValue());
         }
 
-        TransactionResult transaction = account.deposit(currency, bigAmount, Cause.source(this).build());
+        TransactionResult transaction = account.deposit(currency, bigAmount, Cause.builder().append(this).build(EventContext.empty()));
         ResultType result = transaction.getResult();
         if(result == ResultType.SUCCESS)
             return new OperationResult(true, transaction.getAmount().subtract(bigAmount).doubleValue());
@@ -236,7 +237,7 @@ public class SpongeProxy implements EconomyProxy, PermissionProxy
             return new OperationResult(true, delta.doubleValue());
         }
 
-        TransactionResult transaction = account.withdraw(currency, bigAmount, Cause.source(this).build(), context);
+        TransactionResult transaction = account.withdraw(currency, bigAmount, Cause.builder().append(this).build(EventContext.empty()), context);
         ResultType result = transaction.getResult();
         if(result == ResultType.SUCCESS)
             return new OperationResult(true, transaction.getAmount().subtract(bigAmount).doubleValue());
@@ -261,7 +262,7 @@ public class SpongeProxy implements EconomyProxy, PermissionProxy
             return new OperationResult(true, delta.doubleValue());
         }
 
-        TransactionResult transaction = account.deposit(currency, bigAmount, Cause.source(this).build(), context);
+        TransactionResult transaction = account.deposit(currency, bigAmount, Cause.builder().append(this).build(EventContext.empty()), context);
         ResultType result = transaction.getResult();
         if(result == ResultType.SUCCESS)
             return new OperationResult(true, transaction.getAmount().subtract(bigAmount).doubleValue());

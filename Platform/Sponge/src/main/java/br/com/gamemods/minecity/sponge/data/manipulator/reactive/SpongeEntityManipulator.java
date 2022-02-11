@@ -8,20 +8,26 @@ import br.com.gamemods.minecity.sponge.data.manipulator.boxed.EntityDataManipula
 import br.com.gamemods.minecity.sponge.data.manipulator.boxed.MineCityKeys;
 import br.com.gamemods.minecity.sponge.data.value.SpongeEntityData;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.data.DataTransactionResult;
 import org.spongepowered.api.entity.Entity;
 
+import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.UUID;
 
 public class SpongeEntityManipulator implements EntityManipulator, EntityReactor
 {
     private final SpongeManipulator manipulator;
+    private final LinkedHashMap<UUID, SpongeEntityData> entities;
 
     public SpongeEntityManipulator(SpongeManipulator manipulator)
     {
         this.manipulator = manipulator;
+        this.entities = new LinkedHashMap<>();
     }
 
+    @NotNull
     @Override
     public Optional<EntityData> getEntityData(@NotNull Object entityObj)
     {
@@ -29,14 +35,16 @@ public class SpongeEntityManipulator implements EntityManipulator, EntityReactor
             return Optional.empty();
 
         Entity entity = (Entity) entityObj;
-        Optional<EntityData> opt = entity.get(MineCityKeys.ENTITY_DATA);
+        Optional<SpongeEntityData> opt = entity.get(MineCityKeys.ENTITY_DATA);
         if(opt.isPresent())
-            return opt;
+            return Optional.of(opt.get().getEntityData());
 
         SpongeEntityData data = new SpongeEntityData(manipulator, entity);
-        DataTransactionResult result = entity.offer(new EntityDataManipulator(data));
+        EntityDataManipulator entityDataManipulator = new EntityDataManipulator(data);
+        DataTransactionResult result = entity.offer(entityDataManipulator);
         if(!result.isSuccessful())
             manipulator.sponge.logger.error("Failed to apply the entity data manipulator to the entity "+entity);
+        entities.put(entity.getUniqueId(), data);
 
         return Optional.of(data);
     }

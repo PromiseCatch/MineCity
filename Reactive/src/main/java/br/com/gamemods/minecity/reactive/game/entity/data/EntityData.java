@@ -25,8 +25,8 @@ import java.util.function.BiFunction;
 
 public interface EntityData extends SupplierEntityData
 {
-    Object getEntity();
 
+    Object getEntity();
     /**
      * The current entity position
      *
@@ -58,9 +58,9 @@ public interface EntityData extends SupplierEntityData
     Optional<Message> can(PermissionFlag perm, BlockPos pos);
 
     default InteractReaction onLeftClick(Hand hand, ReactiveItemStack stack, @Nullable ReactiveBlock block,
-                                          @Nullable Direction side, PrecisePoint point)
+                                          @Nullable Direction side, PrecisePoint point, boolean sneaking)
     {
-        Interaction event = new Interaction(Interaction.Click.LEFT, this, hand, stack, block, side, point);
+        Interaction event = new Interaction(Interaction.Click.LEFT, this, hand, stack, block, side, point, sneaking);
 
         event.getReactionItemFirst().combineAction(stack.leftClickFirst(event));
         if(block != null)
@@ -71,9 +71,9 @@ public interface EntityData extends SupplierEntityData
     }
 
     default InteractReaction onRightClick(Hand hand, ReactiveItemStack stack, @Nullable ReactiveBlock block,
-                                          @Nullable Direction side, PrecisePoint point)
+                                          @Nullable Direction side, PrecisePoint point, boolean sneaking)
     {
-        Interaction event = new Interaction(Interaction.Click.RIGHT, this, hand, stack, block, side, point);
+        Interaction event = new Interaction(Interaction.Click.RIGHT, this, hand, stack, block, side, point, sneaking);
 
         event.getReactionItemFirst().combineAction(stack.rightClickFirst(event));
         if(block != null)
