@@ -116,7 +116,7 @@ project(':Bukkit') {
         }
 
         baseName = 'MineCity-Bukkit-MC-1.10.2'
-        classifier = null
+        // classifier = null
         relocate 'org.bstats', 'br.com.gamemods.minecity.bukkit.bstats'
     }
 

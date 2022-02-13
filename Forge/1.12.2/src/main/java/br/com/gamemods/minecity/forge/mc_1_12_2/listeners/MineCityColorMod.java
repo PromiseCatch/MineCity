@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 
 @Mod(modid = ModEnv.MOD_ID, name = ModEnv.MOD_ID, version = ModEnv.MOD_VERSION, acceptableRemoteVersions = "*",
-        acceptedMinecraftVersions = "[1.12.2]", dependencies = "before:opencomputers;before:CoFHCore"
+        acceptedMinecraftVersions = "[1.12.2]", dependencies = "before:opencomputers;before:cofhcore"
 )
 public class MineCityColorMod {
     private MineCityColor forge;
