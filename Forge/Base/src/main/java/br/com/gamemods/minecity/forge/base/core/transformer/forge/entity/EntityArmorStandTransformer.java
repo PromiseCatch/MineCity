@@ -15,6 +15,7 @@ import static org.objectweb.asm.Opcodes.*;
  * @deprecated Used to fire a custom event but there's a forge event available for the same thing.
  */
 @Referenced("br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod")
+@Referenced("br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod")
 @Deprecated
 @MethodPatcher
 public class EntityArmorStandTransformer implements IClassTransformer

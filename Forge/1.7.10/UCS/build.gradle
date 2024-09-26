@@ -1,9 +1,18 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "forge2"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "covertdragon"
+            url = "https://maven.covertdragon.team/repository/internal/"
         }
         maven {
             name = "sonatype"
@@ -11,7 +20,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.5') {
+            changing = true
+        }
     }
 }
 
@@ -20,12 +31,12 @@ apply plugin: 'forge'
 project(':Forge:1.7.10:UCS') {
     archivesBaseName = "MineCity-Forge-MC1.7.10-UCS"
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 minecraft {
-    version = "1.7.10-10.13.4.1566-1.7.10"
+    version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "run"
 }
 
@@ -40,10 +51,10 @@ repositories {
 }
 
 dependencies {
-    compile project(':Forge:1.7.10')
-    compile "com.github.GameModsBR:UniversalCoinsServer:e0aab5dbb6111b524a00933f5dfa2faddc4ef2e5"
-    testCompile fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
-    testCompile fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
+    implementation(project(':Forge:1.7.10'))
+    implementation "com.github.GameModsBR:UniversalCoinsServer:e0aab5dbb6111b524a00933f5dfa2faddc4ef2e5"
+    testImplementation fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
+    testImplementation fileTree(dir: "run/mods/1.7.10", include: ["*.jar"])
 }
 
 jar {

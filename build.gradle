@@ -1,25 +1,35 @@
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
     }
 }
 
+plugins {
+    id("com.github.johnrengelman.shadow") version "4.0.4"
+}
+
+apply plugin: 'java'
+
 allprojects {
-    apply plugin: "java"
+    apply plugin: 'java'
+
     group= "br.com.gamemods.minecity"
     version = "1.0.A.3-SNAPSHOT"
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
-}
 
-subprojects {
+    subprojects {
+        apply plugin: 'java'
+
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     repositories {
         mavenCentral()
         maven {
@@ -30,16 +40,12 @@ subprojects {
             url = 'https://oss.sonatype.org/content/groups/public/'
         }
         maven {
-            name = 'Plugin Metrics'
-            url = 'http://repo.mcstats.org/content/repositories/public'
-        }
-        maven {
             name = 'sponge'
             url = 'https://repo.spongepowered.org/maven'
         }
         maven {
             name = 'vault-repo'
-            url = 'http://nexus.hc.to/content/repositories/pub_releases'
+            url = 'https://nexus.hc.to/content/repositories/pub_releases'
         }
         maven {
             url = 'https://jitpack.io'
@@ -47,29 +53,30 @@ subprojects {
     }
 
     dependencies {
-        compile "org.jetbrains:annotations:13.0"
-        testCompile "org.luaj:luaj-jse:3.0.1"
+        implementation "org.jetbrains:annotations:13.0"
 
-        testCompile "junit:junit:4.12"
-        testCompile "org.powermock:powermock-module-junit4:1.6.5"
-        testCompile "org.powermock:powermock-api-mockito:1.6.5"
-        testCompile project(":UnitTest")
-        testCompile "mysql:mysql-connector-java:5.1.32"
+        testImplementation "org.luaj:luaj-jse:3.0.1"
+
+        testImplementation "junit:junit:4.12"
+        testImplementation "org.powermock:powermock-module-junit4:1.6.5"
+        testImplementation "org.powermock:powermock-api-mockito:1.6.5"
+        testImplementation(project(":UnitTest"))
+        testImplementation "mysql:mysql-connector-java:5.1.32"
     }
 }
 
 project(':VaultEco') {
     dependencies {
-        compile project(':Core')
-        compile "net.milkbowl.vault:VaultAPI:1.6"
-        compile "org.bukkit:bukkit:1.8-R0.1-SNAPSHOT"
+        implementation(project(':Core'))
+        implementation "net.milkbowl.vault:VaultAPI:1.6"
+        implementation "org.bukkit:bukkit:1.8-R0.1-SNAPSHOT"
     }
 }
 
 project(':SpongeEco') {
     dependencies {
-        compile project(':Core')
-        compile 'org.spongepowered:spongeapi:5.0.0'
+        implementation(project(':Core'))
+        implementation 'org.spongepowered:spongeapi:5.0.0'
     }
 }
 
@@ -89,8 +96,8 @@ project(':Bukkit') {
         }
         //compile files("run/BuildTools/Spigot/Spigot-Server/target/original-spigot-1.10.2-R0.1-SNAPSHOT.jar")
         //compile files("run/BuildTools/spigot-1.10.2.jar")
-        compile "org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT"
-        compile "org.mcstats.bukkit:metrics:R8-SNAPSHOT"
+        implementation "org.bstats:bstats-bukkit:2.2.1"
+        implementation "org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT"
     }
 
     jar {
@@ -104,13 +111,13 @@ project(':Bukkit') {
     shadowJar {
         dependencies {
             //noinspection GroovyAssignabilityCheck
-            include(dependency("org.mcstats.bukkit:metrics:R8-SNAPSHOT"))
+            include(dependency("org.bstats:bstats-bukkit:2.2.1"))
             include(project(':Core'))
         }
 
         baseName = 'MineCity-Bukkit-MC-1.10.2'
-        classifier = null
-        relocate 'org.mcstats', 'br.com.gamemods.minecity.bukkit.mcstats'
+        // classifier = null
+        relocate 'org.bstats', 'br.com.gamemods.minecity.bukkit.bstats'
     }
 
     jar.enabled = false
@@ -120,6 +127,6 @@ project(':Bukkit') {
 
 project(':UnitTest') {
     dependencies {
-        compile "org.assertj:assertj-core:3.1.0"
+        compile "org.assertj:assertj-core:3.11.1"
     }
 }

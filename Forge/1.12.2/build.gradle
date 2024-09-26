@@ -1,0 +1,147 @@
+
+// For those who want the bleeding edge
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            name = "forge"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "forge2"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+compileJava {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+project(':Forge:1.12.2') {
+    archivesBaseName = "MineCity-Forge-MC1.12.2"
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+minecraft {
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    //mappings channel: 'snapshot', version: '20171003-1.12'
+    mappings channel: 'snapshot', version: '20171003-1.12'
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            jvmArg '-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod'
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+            jvmArg '-Dfml.coreMods.load=br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod'
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
+}
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+repositories {
+    maven { url = "https://maven.cil.li/" }
+    maven { url = "https://maven.ic2.player.to/" }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
+    shade project(':Core')
+    shade project(':Forge:Base')
+    implementation "mysql:mysql-connector-java:6.0.3"
+    implementation "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
+    implementation "net.industrial-craft:industrialcraft-2:2.8.+:dev"
+    testImplementation fileTree(dir: "run/mods", include: ["*.jar"], exclude:["*Assets*"])
+    testImplementation fileTree(dir: "run/mods/1.12.2", include: ["*.jar"])
+}
+
+jar {
+    manifest.attributes (
+            'FMLCorePluginContainsFMLMod': 'true',
+            'ForceLoadAsMod': 'true',
+            "Specification-Title": "minecity",
+            "Specification-Vendor": "minecity",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor": "minecity",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'FMLCorePlugin': 'br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod',
+            'FMLAT': 'minecity_at.cfg'
+    )
+
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            include 'br/**', '*.yml', 'deps.info', 'minecity_*.cfg', 'assets/minecity/**', 'org/bstats/**'
+        }
+    }
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion': "1.12.2"
+    }
+
+    // copy everything else except the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+// workaround for userdev bug
+tasks.create("copyResourceToClasses", Copy.class) {
+    tasks.classes.dependsOn(it)
+    dependsOn(tasks.processResources)
+    onlyIf { gradle.taskGraph.hasTask(tasks.prepareRuns) }
+
+    into("$buildDir/classes/java/main")
+    // if you write @Mod class in kotlin, please use code below
+    // into("$buildDir/classes/kotlin/main")
+    from(tasks.processResources.destinationDir)
+}

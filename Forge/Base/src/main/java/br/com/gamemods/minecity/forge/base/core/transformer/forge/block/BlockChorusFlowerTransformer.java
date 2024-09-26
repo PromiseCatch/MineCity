@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import static org.objectweb.asm.Opcodes.*;
 
 @Referenced("br.com.gamemods.minecity.forge.mc_1_10_2.core.MineCityFrostCoreMod")
+@Referenced("br.com.gamemods.minecity.forge.mc_1_12_2.core.MineCityColorCoreMod")
 @MethodPatcher
 public class BlockChorusFlowerTransformer implements IClassTransformer
 {
